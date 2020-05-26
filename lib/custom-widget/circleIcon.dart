@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 
 class CircleIcon extends StatelessWidget {
-  final IconData child;
+  final Widget child;
   final Function onTap;
   final double iconSize;
-  const CircleIcon({@required this.onTap,this.iconSize = 20, @required this.child});
+
+  final bool isCircle;
+  const CircleIcon({this.isCircle = true,@required this.onTap, this.iconSize = 20, @required this.child});
   @override
   Widget build(BuildContext context) {
     return Material(
       clipBehavior: Clip.antiAlias,
-      type: MaterialType.circle,
+      type: isCircle ? MaterialType.circle : MaterialType.button,
       color: Colors.transparent,
-      child: IconButton(icon: Icon(child), onPressed: onTap,iconSize: iconSize,),
+      child: isCircle ? IconButton(
+        icon: child,
+        onPressed: onTap,
+        iconSize: iconSize,
+      ) : InkWell(
+        child: child
+      ),
     );
   }
 }
