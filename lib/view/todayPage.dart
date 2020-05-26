@@ -10,22 +10,23 @@ class TodayPage extends StatefulWidget {
   _TodayPageState createState() => _TodayPageState();
 }
 
-class _TodayPageState extends State<TodayPage> {
+class _TodayPageState extends State<TodayPage> with AutomaticKeepAliveClientMixin {
   TodayProvider todayProvider;
-  Box<Tasks> taskBox = Hive.box('taks');
+  Box<Tasks> taskBox;
   @override
   void initState() {
     super.initState();
-
-    /* WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
-      await todayProvider.initTask();
-    });*/
+    taskBox = Hive.box('tasks');
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      todayProvider.initTask();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     todayProvider = Provider.of<TodayProvider>(context);
+    super.build(context);
     return Scaffold(
       body: Container(
         height: screenSize.height,
@@ -38,19 +39,23 @@ class _TodayPageState extends State<TodayPage> {
                 ? null
                 : Text("${todayProvider.tasks[index].dateTime.toLocal()}"),
           ),
-          itemCount: todayProvider.totalTask,
+          itemCount: todayProvider.taskLength,
           itemBuilder: (context, index) {
+            var task = todayProvider.tasks;
             return todayProvider.tasks.isEmpty
                 ? Center(
                     child: Text("You have no task today!"),
                   )
                 : TaskItem(
-                    title: "ABCaskhdsakjhd",
-                    money: 25000,
+                    title: task[index].title,
+                    money: task[index].money,
                   );
           },
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

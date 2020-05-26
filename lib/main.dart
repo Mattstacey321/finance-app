@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 
-Future main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await initializeDateFormatting('vi',"");
   var appDocumentDirectory = await pathProvider.getApplicationDocumentsDirectory();

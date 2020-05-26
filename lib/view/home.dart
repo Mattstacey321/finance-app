@@ -216,11 +216,12 @@ showAddTask(BuildContext context) {
                   ),
                   SizedBox(width: 10),
                   FlatButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       await todayProvider.addTask(Task(
                           dateTime: DateTime.now(),
                           money: int.parse(txtMoney.text),
-                          title: txtTitle.text));
+                          title: txtTitle.text.trim()));
+                      Navigator.pop(context);
                     },
                     child: Text("Create"),
                   )

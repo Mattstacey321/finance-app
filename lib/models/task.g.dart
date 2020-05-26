@@ -47,7 +47,7 @@ class TasksAdapter extends TypeAdapter<Tasks> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Tasks(
-      createTime: fields[0] as DateTime,
+      createTime: fields[0] as String,
       tasks: (fields[1] as List)?.cast<Task>(),
     );
   }

@@ -15,7 +15,7 @@ class Task extends HiveObject {
 @HiveType(typeId: 1)
 class Tasks extends HiveObject {
   @HiveField(0)
-  DateTime createTime;
+  String createTime;
   @HiveField(1)
   List<Task> tasks;
   Tasks({this.createTime,this.tasks});

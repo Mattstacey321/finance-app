@@ -1,32 +1,39 @@
 import 'package:finance/models/task.dart';
+import 'package:finance/util/checkTime.dart';
 import 'package:hive/hive.dart';
 
 class TaskServices {
   Box<Tasks> tasksBox = Hive.box('tasks');
 
-  Future initTask() async {
-    await tasksBox.add(Tasks(createTime: DateTime.now(), tasks: []));
-    return tasksBox.length;
-  }
+
 
   Future addTask(Task task) async {
-    Box<Tasks> tasksBox = Hive.box('tasks');
+    // Box<Tasks> tasksBox = Hive.box('tasks');
 
-    var current = DateTime.now();
+    var current = DateTime.now().toString();
 
-    // get index of matched items
-    var ss = tasksBox.get('tasks');
-    print(ss);
-    var index = tasksBox
-        .get('tasks')
-        .tasks
-        .indexWhere((element) => element.dateTime.difference(current).inDays == 0);
-    if (index == 0) {
-      // no have
-      tasksBox.putAt(index, Tasks(tasks: []..add(task)));
+    String key = tasksBox.values.isEmpty
+        ? current
+        : tasksBox.values.singleWhere((element) => isDifference(task.dateTime.toString())).key;
+    print("Match time by key: $key");
+    // .indexWhere((element) => element.dateTime.difference(current).inDays == 0);
+    if (key != null) {
+      tasksBox.get(key).tasks.add(task);
+      tasksBox.get(key).save();
+      //  tasksBox.put(key, Tasks(tasks: [task]));
+      tasksBox.values.forEach((element) {
+        print(element.tasks.toString());
+      });
+      /* if (parseDate(index).difference(current).inDays == 0) {
+        print("Same value");
+       
+      }*/
+
+      //tasksBox.put(index, Tasks(tasks: []..add(task)));
     } else {
-      // have
-      tasksBox.add(Tasks(createTime: DateTime.now(), tasks: []));
+      // no have
+      print("no have");
+      tasksBox.put(current.toString(), Tasks(createTime: DateTime.now().toString(), tasks: []));
     }
   }
 }
