@@ -83,19 +83,22 @@ class _HomePageState extends State<HomePage> {
           preferredSize: Size.fromHeight(50)),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       // Tong tien here
-      floatingActionButton: CircleIcon(
-        isCircle: false,
-        onTap: () {},
-        child: Container(
-            alignment: Alignment.center,
-            height: 50,
-            width: 100,
-            decoration:
-                BoxDecoration(color: Colors.indigo, borderRadius: BorderRadius.circular(10)),
-            child: Text(
-              "2000000 đ",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            )),
+      floatingActionButton: Visibility(
+        visible: _selectedIndex == 0 ? true : false,
+              child: CircleIcon(
+          isCircle: false,
+          onTap: () {},
+          child: Container(
+              alignment: Alignment.center,
+              height: 50,
+              width: 120,
+              decoration:
+                  BoxDecoration(color: Colors.indigo, borderRadius: BorderRadius.circular(10)),
+              child: Text(
+                "${todayProvider.totalMoney} đ",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              )),
+        ),
       ),
       bottomNavigationBar: Container(
           decoration: BoxDecoration(
