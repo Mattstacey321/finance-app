@@ -15,6 +15,7 @@ class TodayPage extends StatefulWidget {
 class _TodayPageState extends State<TodayPage> with AutomaticKeepAliveClientMixin {
   TodayProvider todayProvider;
   Box<Tasks> taskBox;
+  var task = <Task>[];
   @override
   void initState() {
     super.initState();
@@ -66,13 +67,9 @@ class _TodayPageState extends State<TodayPage> with AutomaticKeepAliveClientMixi
                   ? Center(
                       child: Text("You have no task today!"),
                     )
-                  : FaSlideAnimation.slideUp(
-                      delayed: 400,
-                      show: true,
-                      child: TaskItem(
-                        title: task[index].title,
-                        money: task[index].money,
-                      ),
+                  : TaskItem(
+                      title: task[index].title,
+                      money: task[index].money,
                     );
             },
           ),

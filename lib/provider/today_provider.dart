@@ -8,34 +8,33 @@ class TodayProvider extends ChangeNotifier {
   TaskServices _services = TaskServices();
   Box<Tasks> taskBox = Hive.box('tasks');
   int _totalTask = 0;
+  int _totalCurrentTask = 0;
   int _totalMoney = 0;
+  // task today
   var _task = <Task>[];
+  // task add base on user click
   var _currentTask = <Task>[];
-  int _originalLength = 0;
 
-  get totalTask => _totalTask;
-  get totalMoney => _totalMoney;
-  get taskLength => _task.length;
-
-  get currentTask => _currentTask;
-  get totalCurrentTask => _currentTask.length;
+  int get totalTask => _totalTask;
+  int get totalMoney => _totalMoney;
+  int get taskLength => _task.length;
+  List<Task> get currentTask => _currentTask;
+  int get totalCurrentTask => _totalCurrentTask;
 
   void setTotalTask(int total) => _totalTask = total;
+
+  void setTotalCurrentTask(int total) {
+    _totalCurrentTask = total;
+    notifyListeners();
+  }
+
   List<Task> get tasks => _task;
 
   void initTask() {
-    //_services.initTask();
-
     taskBox.values.lastWhere((element) => isDifference(element.key)).tasks.forEach((element) {
       _task.insert(0, Task(title: element.title, dateTime: element.dateTime, money: element.money));
       _totalMoney = _totalMoney + element.money;
     });
-    _originalLength = _task.length;
-
-    print("task length ${_task.length}");
-    /*taskBox.get('tasks').key  .tasks.forEach((e) {
-      _task.add(Task(dateTime: e.dateTime,money: e.money,title: e.title));
-    });*/
 
     notifyListeners();
   }
@@ -46,16 +45,36 @@ class TodayProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Task> countTask(DateTime selectedDay) {
-    _currentTask.clear();
+  int countTask(DateTime selectedDay) {
+    int tasks = 0;
     try {
-      var tasks = taskBox.values.singleWhere((element) {
-        return selectedDay.difference(DateTime.parse(element.key)).inDays == 0;
-      }).tasks;
-      //print(tasks.length);
-      _currentTask.addAll(tasks);
+      //setTotalCurrentTask(0);
+      tasks = taskBox.values
+              .singleWhere((element) {
+                return selectedDay.difference(DateTime.parse(element.key)).inDays == 0;
+              })
+              .tasks
+              .length ??
+          0;
+      setTotalCurrentTask(tasks);
+      //print(_currentTask.length);
     } catch (e) {
-      return _currentTask;
+      return 0;
+    }
+    return tasks;
+  }
+
+  List<Task> getTaskDetail(DateTime selectedDay) {
+    try {
+      _currentTask.clear();
+      notifyListeners();
+      var tasks = taskBox.values.singleWhere((element) {
+        return selectedDay.difference(DateTime.parse(element.key)).inDays.abs() == 0;
+      }).tasks;
+      _currentTask.addAll(tasks);
+      notifyListeners();
+    } catch (e) {
+      return [];
     }
     return _currentTask;
   }
