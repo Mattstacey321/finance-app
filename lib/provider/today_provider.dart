@@ -1,6 +1,5 @@
 import 'package:finance/models/task.dart';
 import 'package:finance/services/task_services.dart';
-import 'package:finance/util/checkTime.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -31,16 +30,17 @@ class TodayProvider extends ChangeNotifier {
   List<Task> get tasks => _task;
 
   void initTask() {
-    taskBox.values.lastWhere((element) => isDifference(element.key)).tasks.forEach((element) {
+    /*taskBox.values.lastWhere(
+      (element) => isDifference(element.key) ?? []).tasks.forEach((element) {
       _task.insert(0, Task(title: element.title, dateTime: element.dateTime, money: element.money));
       _totalMoney = _totalMoney + element.money;
-    });
+    });*/
 
     notifyListeners();
   }
 
   Future addTask(Task task) async {
-    await _services.addTask(task);
+    _services.addTask(task);
     _task.insert(0, task);
     notifyListeners();
   }
