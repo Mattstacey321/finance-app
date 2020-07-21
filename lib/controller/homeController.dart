@@ -1,6 +1,9 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/custom-widget/circleIcon.dart';
 import 'package:finance/custom-widget/customButton.dart';
+import 'package:finance/models/task.dart';
+import 'package:finance/services/map_services.dart';
 import 'package:finance/services/task_services.dart';
 import 'package:finance/style.dart';
 import 'package:finance/ui/map_view/map.dart';
@@ -11,40 +14,51 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   TaskServices _taskServices = TaskServices();
-  var location = Position();
+  var location = Map<String, dynamic>();
   var _txtLocation = TextEditingController();
+  var _txtTitle = TextEditingController();
+  var _txtMoney = TextEditingController();
+  var _txtTask = TextEditingController();
+  var _checkTitle = false.obs;
+  var _checkMoney = false.obs;
+  var _checkLocation = false.obs;
+  var _isDataNotEmpty = false.obs;
   var _tasks = [];
   var _currentTasks = [];
   var _totalMoney = 0.obs;
 
-  int get totalMoney => _totalMoney.value;
+  int get totalMoney {
+    var totalMoney = 0;
+    for (var item in tasks) {
+      totalMoney += item.money;
+    }
+    return _totalMoney.value = totalMoney;
+  }
+
   int get totalCurrentTask => _currentTasks.length;
   List get tasks => _tasks;
   List get currentTask => _currentTasks;
+  bool get isLocationEmpty => _checkLocation.value;
+  bool get isDataNotEmpty => _isDataNotEmpty.value = (_checkMoney.value && _checkTitle.value);
 
   @override
   onInit() async {
-    _tasks.addAll(_taskServices.initTask());
-    _currentTasks.addAll(_taskServices.initTask());
+    initTask();
+
     super.onInit();
   }
 
-  Future getLocation() async {
-    Position position =
-        await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemark = await Geolocator().placemarkFromPosition(position);
-    String yourLocation = placemark[0].subThoroughfare +
-        ' ,' +
-        placemark[0].thoroughfare +
-        ' ,' +
-        placemark[0].subAdministrativeArea;
-    _txtLocation.text = yourLocation;
-    this.location = position;
+  void initTask() {
+    _tasks.addAll(_taskServices.initTask());
+    _currentTasks.addAll(_taskServices.initTask());
+    update();
   }
 
-  setLocation(String location) {
-    this._txtLocation.text = location;
-    print("debug: you set location : $location");
+  setLocation(String address, Map pickedLocation) {
+    this._txtLocation.text = address;
+    this.location = pickedLocation;
+    print("debug: you set address : $address");
+    print("debug: you set location : $pickedLocation");
   }
 
   getCurrentTask(DateTime currentTime) {
@@ -53,10 +67,14 @@ class HomeController extends GetxController {
     update();
   }
 
+  removeTask(int index) {
+    _tasks.removeAt(index);
+    _totalMoney.value -= _tasks[index].money;
+  }
+
   showAddTask() {
-    var txtTitle = TextEditingController();
-    var txtMoney = TextEditingController();
-    var txtTask = TextEditingController();
+    _txtMoney.text = "0";
+    _txtTitle.text = "";
     return Get.bottomSheet(
         SafeArea(
           child: SingleChildScrollView(
@@ -94,20 +112,27 @@ class HomeController extends GetxController {
                   Text("Task title", style: AppStyle.titleCreateTaskBottomSheet),
                   SizedBox(height: 10),
                   Container(
-                    height: 50,
+                    height: 60,
                     width: Get.width,
                     alignment: Alignment.center,
                     child: TextField(
-                      controller: txtTitle,
+                      controller: _txtTitle,
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.text,
+                      onChanged: (value) =>
+                          value != "" ? _checkTitle.value = true : _checkTitle.value = false,
                       maxLines: 2,
                       style:
                           TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
                           hintText: "Your title here",
+                          suffixIcon: CircleIcon(
+                              onTap: () {
+                                _txtTitle.clear();
+                              },
+                              child: Icon(FeatherIcons.x)),
                           hintStyle: TextStyle(fontSize: 30)),
                     ),
                   ),
@@ -118,12 +143,15 @@ class HomeController extends GetxController {
                     height: 60,
                     width: Get.width,
                     child: TextField(
-                      controller: txtMoney,
+                      controller: _txtMoney,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         new BlacklistingTextInputFormatter(new RegExp('[^[a-zA-Z ]]')),
                       ],
                       style: TextStyle(fontSize: 20, color: Colors.black),
+                      onChanged: (value) => int.parse(value) > 0
+                          ? _checkMoney.value = true
+                          : _checkMoney.value = false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           filled: true,
@@ -140,11 +168,36 @@ class HomeController extends GetxController {
                               borderSide: BorderSide(color: Colors.transparent)),
                           contentPadding: EdgeInsets.symmetric(horizontal: 10),
                           hintText: "Your money here",
+                          suffixIcon: CircleIcon(
+                              onTap: () {
+                                _txtMoney.clear();
+                              },
+                              child: Icon(FeatherIcons.x)),
+                          prefixIcon: CircleIcon(onTap: null, child: Icon(Icons.attach_money)),
                           hintStyle: TextStyle(fontSize: 20)),
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text("Location", style: AppStyle.titleCreateTaskBottomSheet),
+                  Row(
+                    children: [
+                      Text("Location", style: AppStyle.titleCreateTaskBottomSheet),
+                      Spacer(),
+                      InkWell(
+                        onTap: this._txtLocation.text == ""
+                            ? null
+                            : () {
+                                Get.to(
+                                    MapView(
+                                      latitude: location['latitude'],
+                                      longitude: location['longitude'],
+                                    ),
+                                    transition: Transition.upToDown,
+                                    opaque: false);
+                              },
+                        child: Text("Edit"),
+                      )
+                    ],
+                  ),
                   SizedBox(height: 10),
                   Container(
                     height: 60,
@@ -153,6 +206,8 @@ class HomeController extends GetxController {
                       controller: _txtLocation,
                       keyboardType: TextInputType.text,
                       style: TextStyle(fontSize: 20, color: Colors.black),
+                      onChanged: (value) =>
+                          value != "" ? _checkLocation.value = true : _checkLocation.value = false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           filled: true,
@@ -170,13 +225,12 @@ class HomeController extends GetxController {
                           contentPadding: EdgeInsets.symmetric(horizontal: 10),
                           prefixIcon: CircleIcon(
                               onTap: () async {
-                                await getLocation().whenComplete(() => Get.to(
-                                    Map(
-                                      position: this.location,
-                                    ),
-                                    transition: Transition.upToDown,
-                                    opaque: false));
+                                await MapServices.getCurrentLocation().then((value) {
+                                  this._txtLocation.text = value['address'];
+                                  this.location = value['position'];
+                                });
                               },
+                              tooltip: "Get location",
                               child: Icon(FeatherIcons.mapPin)),
                           hintText: "Your location here",
                           hintStyle: TextStyle(fontSize: 20)),
@@ -189,7 +243,7 @@ class HomeController extends GetxController {
                     height: 50,
                     width: Get.width,
                     child: TextField(
-                      controller: txtTask,
+                      controller: _txtTask,
                       keyboardType: TextInputType.text,
                       style: TextStyle(fontSize: 20, color: Colors.black),
                       decoration: InputDecoration(
@@ -221,11 +275,13 @@ class HomeController extends GetxController {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                         color: Colors.indigo,
                         textColor: Colors.white,
-                        onPressed: () {},
+                        onPressed: () {
+                          addTask();
+                        },
                         child: Text("Create Task"),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -239,7 +295,31 @@ class HomeController extends GetxController {
         ignoreSafeArea: true,
         isScrollControlled: true,
         backgroundColor: Colors.white);
+  }
 
-  
+  addTask() {
+    print(this.location.toString());
+    try {
+      var task = Task(
+          money: int.parse(_txtMoney.text),
+          location: this.location,
+          title: _txtTitle.text,
+          dateTime: DateTime.now());
+
+      _taskServices.addTask(task);
+      _tasks.add(task);
+      update();
+      BotToast.showText(text: "Add success");
+      Get.back();
+    } catch (e) {
+      BotToast.showText(text: "Add fail");
+    }
+  }
+
+  void clear() {
+    this._txtMoney.text = "0";
+    this._txtTitle.text = "";
+    this._txtLocation.text = "";
+    this.location = null;
   }
 }

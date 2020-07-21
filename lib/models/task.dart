@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+
 part 'task.g.dart';
 
 @HiveType(typeId: 0)
@@ -9,7 +11,9 @@ class Task extends HiveObject{
   int money;
   @HiveField(2)
   DateTime dateTime;
-  Task({this.title, this.money, this.dateTime});
+  @HiveField(3)
+  Map location;
+  Task({@required this.title,@required this.money, this.dateTime, @required this.location});
 }
 
 @HiveType(typeId: 1)

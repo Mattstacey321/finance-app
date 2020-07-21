@@ -6,8 +6,8 @@ import 'package:finance/custom-widget/circleIcon.dart';
 import 'package:finance/custom-widget/customButton.dart';
 import 'package:finance/provider/today_provider.dart';
 import 'package:finance/style.dart';
-import 'package:finance/ui/profile.dart';
 import 'package:finance/ui/presentTask.dart';
+import 'package:finance/ui/profile.dart';
 import 'package:finance/util/placeHolder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,12 +45,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     //var screenSize = MediaQuery.of(context).size;
     //todayProvider = Provider.of<TodayProvider>(context);
-    return GetX<HomeController>(
+    return GetBuilder<HomeController>(
       init: HomeController(),
       builder: (model) => Scaffold(
         appBar: PreferredSize(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Row(
                 children: <Widget>[
                   CachedNetworkImage(
@@ -83,7 +83,8 @@ class _HomePageState extends State<HomePage> {
                     width: 40,
                     icon: FeatherIcons.plus,
                     onPress: () {
-                      model.showAddTask();
+                      Get.isBottomSheetOpen ? model.clear() :model.showAddTask();
+                      
                     },
                     iconColor: Colors.blue,
                     tooltip: "Create task",

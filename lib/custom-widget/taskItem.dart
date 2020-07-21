@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/custom-widget/customButton.dart';
+import 'package:finance/services/map_services.dart';
 import 'package:finance/util/checkTime.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,16 +10,28 @@ import 'package:get/get.dart';
 class TaskItem extends StatefulWidget {
   final String title;
   final int money;
-  final String location;
+  final Map location;
   final String time;
   final String type;
 
-  TaskItem({this.title,this.type, this.time, this.money, this.location});
+  TaskItem({this.title, this.type, this.time, this.money, this.location});
   @override
   _TaskItemState createState() => _TaskItemState();
 }
 
 class _TaskItemState extends State<TaskItem> {
+  StreamController _timeController;
+  @override
+  void initState() {
+    _timeController = StreamController();
+    updateTime();
+    super.initState();
+  }
+
+  updateTime() {
+    return _timeController.add(toNow(DateTime.parse(widget.time)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,6 +63,7 @@ class _TaskItemState extends State<TaskItem> {
                   icon: FeatherIcons.moreHorizontal)
             ],
           ),
+          // date time
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -58,7 +74,38 @@ class _TaskItemState extends State<TaskItem> {
                     size: 20,
                   ),
                   SizedBox(width: 10),
-                  Text(widget.location)
+                  FutureBuilder<String>(
+                    future: Future(() async {
+                      print(widget.location['latitude']);
+                      print(widget.location['longitude']);
+                      return await MapServices.getAddressLocation(
+                          latitude: widget.location['latitude'],
+                          longitude: widget.location['longitude']);
+                    }),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Flexible(
+                            child: Text(
+                          "Waiting",
+                          overflow: TextOverflow.ellipsis,
+                        ));
+                      }
+                      if (snapshot.hasError) {
+                        print(snapshot.error.toString());
+                        return Flexible(
+                          child: Text(
+                            "Has error",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      } else
+                        return Flexible(
+                            child: Text(
+                          snapshot.data,
+                          overflow: TextOverflow.ellipsis,
+                        ));
+                    },
+                  )
                 ],
               ),
               SizedBox(
@@ -71,7 +118,19 @@ class _TaskItemState extends State<TaskItem> {
                     size: 20,
                   ),
                   SizedBox(width: 10),
-                  Text(toNow(DateTime.parse(widget.time)))
+                  StreamBuilder(
+                    stream: _timeController.stream,
+                    builder: (context, snapshot) {
+                      print('Has error: ${snapshot.hasError}');
+                      print('Has data: ${snapshot.hasData}');
+                      print('Snapshot Data ${snapshot.data}');
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text("Waiting");
+                      } else {
+                        return Text(snapshot.data);
+                      }
+                    },
+                  )
                 ],
               ),
               Row(
@@ -88,19 +147,21 @@ class _TaskItemState extends State<TaskItem> {
                   ),
                   Spacer(),
                   CustomButton(
-                    height: 35, 
+                    height: 35,
                     width: 100,
-                    onPress: (){},
-                    isClickable: false, 
-                    tooltip: "", 
-                    iconColor: Colors.orange, 
+                    onPress: () {},
+                    isClickable: false,
+                    tooltip: "",
+                    iconColor: Colors.orange,
                     icon: FeatherIcons.pieChart,
                     childs: [
-                      Text("Eat",style: TextStyle(color:Colors.orange[900],fontSize:16,fontWeight: FontWeight.bold),)
+                      Text(
+                        widget.type,
+                        style: TextStyle(
+                            color: Colors.orange[900], fontSize: 16, fontWeight: FontWeight.bold),
+                      )
                     ],
-                    
-                    )
-                  
+                  )
                 ],
               )
             ],

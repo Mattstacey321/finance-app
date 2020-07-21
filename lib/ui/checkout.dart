@@ -32,7 +32,8 @@ class _CheckoutState extends State<Checkout> {
     return GetBuilder<HomeController>(builder: (model) {
       print("debug: tasks count = ${model.totalCurrentTask} for ${_calendarController.focusedDay}");
       var tasks = model.currentTask;
-      int countTasks = tasks.length;
+      int todayTask = model.tasks.length;
+      int countTask = tasks.length;
       return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -76,12 +77,12 @@ class _CheckoutState extends State<Checkout> {
                       //print("u click $date");
                       //get task detail
 
-                      return buildDay(date, countTasks);
+                      return buildDay(date, countTask);
                     },
                     todayDayBuilder: (context, date, events) {
                       // show 0 if that day doesn't have any task.
 
-                      return buildDay(date, 0);
+                      return buildDay(date, todayTask);
                     },
                   ),
                 ),
@@ -105,7 +106,7 @@ class _CheckoutState extends State<Checkout> {
                               return TaskItem(
                                 title: tasks[index].title,
                                 money: tasks[index].money,
-                                location: "ABC",
+                                location: tasks[index].location,
                                 time: tasks[index].dateTime.toString(),
                                 type: "Eat  ",
                               );
@@ -150,7 +151,7 @@ Widget buildDay(DateTime date, int value) {
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
                 ),
-                child: date.day == DateTime.now().day ? Text("0") : Text("$value")))
+                child: Text("$value")))
         //  : Container()
       ],
     ),

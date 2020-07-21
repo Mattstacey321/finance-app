@@ -6,23 +6,25 @@ import 'package:finance/custom-widget/customButton.dart';
 import 'package:finance/services/map_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:user_location/user_location.dart';
 import 'package:latlong/latlong.dart';
 
-class Map extends StatefulWidget {
-  final Position position;
-  Map({this.position});
+class MapView extends StatefulWidget {
+  final double latitude;
+  final double longitude;
+  MapView({this.latitude, this.longitude});
   @override
   _MapState createState() => _MapState();
 }
 
-class _MapState extends State<Map> {
+class _MapState extends State<MapView> {
   MapController mapController = MapController();
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
-  final HomeController h = Get.find<HomeController>();
+  HomeController h = Get.find<HomeController>();
   onTap() {}
   @override
   void initState() {
@@ -44,15 +46,17 @@ class _MapState extends State<Map> {
   }
 
   addMarker(LatLng lng, String pickAddress) {
-    h.setLocation(pickAddress);
+    var pickLocation = {"latitude": lng.latitude, "longitude": lng.longitude};
+    h.setLocation(
+      pickAddress,pickLocation
+    );
     setState(() {
       markers.add(Marker(
         width: 80.0,
         height: 80.0,
+
         point: lng, // a latlng of where you want it
-        builder: (ctx) => Row(
-          children: [Icon(FeatherIcons.mapPin), Flexible(child: Text("You here"))],
-        ),
+        builder: (ctx) => Icon(Icons.location_on, color: Colors.blue, size: 40),
       ));
     });
   }
@@ -92,16 +96,15 @@ class _MapState extends State<Map> {
         height: Get.height,
         child: FlutterMap(
           options: MapOptions(
-              center: LatLng(widget.position.latitude, widget.position.longitude),
+              center: LatLng(widget.latitude, widget.longitude),
               zoom: 15.0,
-              plugins: [
-                UserLocationPlugin(),
-              ],
-              onTap: markers.length > 0
+              plugins: [UserLocationPlugin(), PopupMarkerPlugin()],
+              onLongPress: markers.length > 0
                   ? null
                   : (latlng) async {
                       print("you tap at $latlng");
-                      await MapServices.getLocation(latlng)
+                      await MapServices.getAddressLocation(
+                              latitude: latlng.latitude, longitude: latlng.longitude)
                           .then((value) => addMarker(latlng, value));
                     }),
           layers: [
