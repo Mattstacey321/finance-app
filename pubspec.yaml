@@ -40,6 +40,7 @@ dependencies:
     git:
       url: https://github.com/igaurab/user_location_plugin.git
   flutter_map_marker_popup: ^0.1.4
+  shared_preferences: ^0.5.8
 
 dependency_overrides: 
   path: 1.7.0 

@@ -113,8 +113,10 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.2))]),
+                
+               // boxShadow: [BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.2))]
+                
+                ),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),

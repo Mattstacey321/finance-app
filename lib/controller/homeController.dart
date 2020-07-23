@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+import 'package:finance/controller/profileController.dart';
 import 'package:finance/custom-widget/circleIcon.dart';
 import 'package:finance/custom-widget/customButton.dart';
 import 'package:finance/models/task.dart';
@@ -40,7 +41,6 @@ class HomeController extends GetxController {
   List get currentTask => _currentTasks;
   bool get isLocationEmpty => _checkLocation.value;
   bool get isDataNotEmpty => _isDataNotEmpty.value = (_checkMoney.value && _checkTitle.value);
-
   @override
   onInit() async {
     initTask();
@@ -76,8 +76,8 @@ class HomeController extends GetxController {
     _txtMoney.text = "0";
     _txtTitle.text = "";
     return Get.bottomSheet(
-        SafeArea(
-          child: SingleChildScrollView(
+       SingleChildScrollView(
+          child: Material(
             child: Container(
               width: Get.width,
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -123,7 +123,7 @@ class HomeController extends GetxController {
                           value != "" ? _checkTitle.value = true : _checkTitle.value = false,
                       maxLines: 2,
                       style:
-                          TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -148,7 +148,7 @@ class HomeController extends GetxController {
                       inputFormatters: [
                         new BlacklistingTextInputFormatter(new RegExp('[^[a-zA-Z ]]')),
                       ],
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(fontSize: 20),
                       onChanged: (value) => int.parse(value) > 0
                           ? _checkMoney.value = true
                           : _checkMoney.value = false,
@@ -205,7 +205,7 @@ class HomeController extends GetxController {
                     child: TextField(
                       controller: _txtLocation,
                       keyboardType: TextInputType.text,
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(fontSize: 20),
                       onChanged: (value) =>
                           value != "" ? _checkLocation.value = true : _checkLocation.value = false,
                       decoration: InputDecoration(
@@ -245,7 +245,7 @@ class HomeController extends GetxController {
                     child: TextField(
                       controller: _txtTask,
                       keyboardType: TextInputType.text,
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(fontSize: 20),
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           filled: true,
@@ -286,15 +286,16 @@ class HomeController extends GetxController {
               ),
             ),
           ),
-        ),
-        elevation: 1,
-        shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        useRootNavigator: true,
-        ignoreSafeArea: true,
-        isScrollControlled: true,
-        backgroundColor: Colors.white);
+        
+      ),
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+      useRootNavigator: true,
+      ignoreSafeArea: true,
+      isScrollControlled: true,
+    );
   }
 
   addTask() {

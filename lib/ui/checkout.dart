@@ -1,6 +1,7 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/controller/homeController.dart';
 import 'package:finance/custom-widget/FaSlideUp.dart';
+import 'package:finance/custom-widget/customTableCalendar.dart';
 import 'package:finance/custom-widget/taskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -52,41 +53,13 @@ class _CheckoutState extends State<Checkout> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FaSlideAnimation.slideUp(
-                delayed: 200,
-                show: true,
-                child: TableCalendar(
-                  initialCalendarFormat: CalendarFormat.week,
-                  calendarStyle: CalendarStyle(
-                    outsideDaysVisible: false,
-                  ),
-                  onDaySelected: (day, events) => model.getCurrentTask(day),
-                  calendarController: _calendarController,
-                  builders: CalendarBuilders(
-                    dayBuilder: (context, date, events) {
-                      // count task here
-
-                      return Container(
-                        width: 40,
-                        height: 40,
-                        margin: const EdgeInsets.all(4.0),
-                        alignment: Alignment.center,
-                        child: Text("${date.day}"),
-                      );
-                    },
-                    selectedDayBuilder: (context, date, events) {
-                      //print("u click $date");
-                      //get task detail
-
-                      return buildDay(date, countTask);
-                    },
-                    todayDayBuilder: (context, date, events) {
-                      // show 0 if that day doesn't have any task.
-
-                      return buildDay(date, todayTask);
-                    },
-                  ),
-                ),
-              ),
+                  delayed: 200,
+                  show: true,
+                  child: CustomTableCalendar(
+                      //isDarkMode: model.isDarkMode,
+                      onDaySelected: (day) => model.getCurrentTask(day),
+                      countTask: countTask,
+                      todayTask: todayTask)),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),
@@ -121,39 +94,4 @@ class _CheckoutState extends State<Checkout> {
       );
     });
   }
-}
-
-Widget buildDay(DateTime date, int value) {
-  return Container(
-    width: 40,
-    height: 40,
-    margin: const EdgeInsets.all(5.0),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: date.day == DateTime.now().day ? Colors.orange[100] : Colors.lightBlue[100]),
-    child: Stack(
-      children: [
-        Positioned.fill(
-            child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  date.day.toString(),
-                  style: TextStyle(color: Colors.black),
-                ))),
-        Positioned(
-            right: -1,
-            bottom: -1,
-            child: Container(
-                height: 20,
-                width: 20,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                ),
-                child: Text("$value")))
-        //  : Container()
-      ],
-    ),
-  );
 }
