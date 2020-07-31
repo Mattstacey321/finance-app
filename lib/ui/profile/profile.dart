@@ -1,9 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+import 'package:finance/controller/homeController.dart';
 import 'package:finance/controller/profileController.dart';
 import 'package:finance/custom-widget/customButton.dart';
 import 'package:finance/custom-widget/customSetting.dart';
-import 'package:finance/custom-widget/statistics_animation.dart';
-import 'package:finance/style.dart';
+import 'package:finance/custom-widget/themeSwitcher.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,12 +14,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  static HomeController h = Get.put(HomeController());
   var list = [
-    {"title": "Today", "money": 200000},
+    {"title": "Today", "money": h.totalMoney},
     {"title": "This week", "money": 2560000},
     {"title": "This month", "money": 5600000}
   ];
   var listMenu = ["Profile Information", "Dark mode", "Log out"];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -131,10 +134,31 @@ class _ProfileState extends State<Profile> {
                   Divider(thickness: 1),
                   CustomSetting(
                     title: "Dark mode",
+                    onTap: () => null,
+                    isClickable: false,
+                    childs: [
+                      Spacer(),
+                      AbsorbPointer(
+                        absorbing: false,
+                        child: GetBuilder<ProfileController>(
+                            init: ProfileController(),
+                            builder: (p) => ThemeSwitcher(
+                                  onTap: () {
+                                    p.switchTheme();
+                                  },
+                                  isDarkMode: p.isDarkMode,
+                                )),
+                      )
+                      //Obx(() => Text("${_.isDarkMode ? "Light" : "Dark"}"))
+                    ],
+                  ),
+                  Divider(thickness: 1),
+                  CustomSetting(
+                    title: "Sync data",
                     onTap: () {
-                      _.switchTheme();
+                      BotToast.showText(text: "Sync data ...");
                     },
-                    childs: [Spacer(), Obx(() => Text("${_.isDarkMode ? "Light" : "Dark"}"))],
+                    childs: [Spacer(), Text("Last modified 31/7/2020")],
                   ),
                   Spacer(),
                   Container(
@@ -144,7 +168,9 @@ class _ProfileState extends State<Profile> {
                       CustomButton(
                           height: 50,
                           width: 140,
-                          onPress: () {},
+                          onPress: () {
+                            _.logout();
+                          },
                           tooltip: "Log out",
                           iconColor: Colors.red,
                           childs: [Text("Log out")],

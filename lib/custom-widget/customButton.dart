@@ -12,8 +12,8 @@ class CustomButton extends StatelessWidget {
   final bool isClickable;
   final List<Widget> childs;
   CustomButton(
-      {@required this.height,
-      @required this.width,
+      { this.height = 36,
+       this.width = 88,
       this.radius = 15,
       @required this.onPress,
       @required this.tooltip,
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
       this.isClickable = true,
       this.opacity = 0.2,
       this.childs,
-      @required this.icon});
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,8 @@ class CustomButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: iconColor, size: height * 0.6),
-                childs != null ? SizedBox(width: 10) : SizedBox(width: 0),
+                icon != null ?  Icon(icon, color: iconColor, size: height * 0.6) : SizedBox(width: 0),
+                childs != null ? icon != null ? SizedBox(width: 10) : SizedBox(width:0) : SizedBox(width: 0),
                 for (var widget in childs ?? []) widget
               ],
             ),

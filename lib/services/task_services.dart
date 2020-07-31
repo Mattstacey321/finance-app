@@ -4,28 +4,47 @@ import 'package:hive/hive.dart';
 
 class TaskServices {
   Box<Tasks> tasksBox = Hive.box('tasks');
+  Tasks emptyTask = Tasks(tasks: [], createTime: DateTime.now().toString());
 
   List<Task> initTask() {
-    return tasksBox.values
-        .singleWhere((e) => isDifference(compareTime: e.createTime.toString()), orElse: () => Tasks(createTime: DateTime.now().toString(),tasks: []))
-        .tasks;
+    var current = DateTime.now().toString();
+    bool isKeyExist = tasksBox.values.any((e) => checkKeyExist(e.key));
+    if (isKeyExist) {
+      return tasksBox.values.lastWhere((e) {
+        return isDifference(compareTime: e.key);
+      }, orElse: () => emptyTask).tasks;
+    } else {
+      tasksBox.put(current.toString(), emptyTask);
+      return [];
+    }
+    /*String key = tasksBox.values.isEmpty
+        ? current
+        : tasksBox.values
+            .singleWhere((element) => isDifference(compareTime: task.dateTime.toString()))
+            .key;*/
+  }
+
+  checkKeyExist(String createTime) {
+    return isDifference(compareTime: createTime);
   }
 
   List<Task> getTaskByDate(DateTime selectedDay) {
     print("you choose $selectedDay");
-    return tasksBox.values
-        .singleWhere((e) => DateTime.parse(e.key).day == selectedDay.day,
-            orElse: () => Tasks())
-        .tasks;
+    return tasksBox.values.singleWhere((e) {
+      print("debug getTaskByDate ${selectedDay.difference(DateTime.parse(e.key)).inDays}");
+      return isDifference(compareTime: selectedDay.toString());
+    }, orElse: () => emptyTask).tasks;
   }
 
   void addTask(Task task) {
-    print(task);
     var current = DateTime.now().toString();
 
     String key = tasksBox.values.isEmpty
         ? current
-        : tasksBox.values.singleWhere((element) => isDifference(compareTime: task.dateTime.toString())).key;
+        : tasksBox.values.singleWhere(
+            (element) => isDifference(compareTime: task.dateTime.toString()), orElse: () {
+            return emptyTask;
+          }).key;
 
     print("Match time by key: $key");
     if (key != null && tasksBox.isNotEmpty) {
@@ -35,12 +54,33 @@ class TaskServices {
       tasksBox.values.forEach((element) {
         print(element.tasks.toString());
       });
-    } else {
+    }
+    /*else {
       // no have
       print("no have");
       tasksBox.put(current.toString(), Tasks(createTime: DateTime.now().toString(), tasks: []));
       tasksBox.get(key).tasks.add(task);
       tasksBox.get(key).save();
+    }*/
+  }
+
+  Future removeTask(int index, String time) async {
+    String key = tasksBox.values.isEmpty
+        ? ""
+        : tasksBox.values.singleWhere((element) => isDifference(compareTime: time)).key;
+    if (key == "") {
+      //key not exist.
+      return false;
+    } else {
+      var result = tasksBox.get(key);
+      if (result.taskLength > 0) {
+        result.tasks.removeAt(index);
+        //update box with key
+        tasksBox.get(key).save();
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }

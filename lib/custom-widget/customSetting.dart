@@ -4,14 +4,16 @@ import 'package:get/get.dart';
 
 class CustomSetting extends StatelessWidget {
   final String title;
+  final bool isClickable;
   final Function onTap;
   final List<Widget> childs;
-  CustomSetting({this.title,this.onTap, this.childs});
+  CustomSetting({this.title, this.isClickable = true, this.onTap, this.childs});
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=> onTap(),
+      onTap: isClickable ? () => onTap() : null,
       splashColor: Colors.grey.withOpacity(0.2),
+      enableFeedback: onTap() != null ? true : false,
       child: Container(
         height: 50,
         width: Get.width,

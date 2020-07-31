@@ -8,13 +8,13 @@ part of 'task.dart';
 
 class TaskAdapter extends TypeAdapter<Task> {
   @override
-  final typeId = 0;
+  final int typeId = 0;
 
   @override
   Task read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Task(
       title: fields[0] as String,
@@ -37,17 +37,27 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(3)
       ..write(obj.location);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TaskAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class TasksAdapter extends TypeAdapter<Tasks> {
   @override
-  final typeId = 1;
+  final int typeId = 1;
 
   @override
   Tasks read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Tasks(
       createTime: fields[0] as String,
@@ -64,4 +74,14 @@ class TasksAdapter extends TypeAdapter<Tasks> {
       ..writeByte(1)
       ..write(obj.tasks);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TasksAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

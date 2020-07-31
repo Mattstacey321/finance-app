@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 part 'task.g.dart';
 
 @HiveType(typeId: 0)
-class Task extends HiveObject{
+class Task extends HiveObject {
   @HiveField(0)
   String title;
   @HiveField(1)
@@ -13,7 +13,10 @@ class Task extends HiveObject{
   DateTime dateTime;
   @HiveField(3)
   Map location;
-  Task({@required this.title,@required this.money, this.dateTime, @required this.location});
+
+  String get dateTimeAsString => dateTime.toString();
+
+  Task({@required this.title, @required this.money, this.dateTime, @required this.location});
 }
 
 @HiveType(typeId: 1)
@@ -22,5 +25,6 @@ class Tasks extends HiveObject {
   String createTime;
   @HiveField(1)
   List<Task> tasks;
+  int get taskLength => tasks.length;
   Tasks({this.createTime, this.tasks});
 }

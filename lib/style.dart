@@ -19,11 +19,25 @@ class AppStyle {
     return TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
   }
 
-  static HeaderStyle tableCalendarHeaderStyle(bool isDarkMode) {
+  static HeaderStyle tableCalendarHeaderStyle() {
     return HeaderStyle(
-      leftChevronIcon: Icon(Icons.chevron_left, color: Get.isDarkMode ? Colors.white : Colors.black),
-      rightChevronIcon: Icon(Icons.chevron_right, color: Get.isDarkMode? Colors.white : Colors.black),
+      leftChevronIcon:
+          Icon(Icons.chevron_left, color: Get.isDarkMode ? Colors.white : Colors.black),
+      rightChevronIcon:
+          Icon(Icons.chevron_right, color: Get.isDarkMode ? Colors.white : Colors.black),
       formatButtonVisible: false,
     );
+  }
+
+  static ThemeData get lightTheme {
+    return ThemeData(
+      backgroundColor: Colors.white
+    );
+  }
+
+  static ThemeData get darkTheme {
+    return ThemeData(
+      backgroundColor: Colors.black,
+      buttonColor: Colors.indigo);
   }
 }

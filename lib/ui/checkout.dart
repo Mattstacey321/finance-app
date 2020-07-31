@@ -1,4 +1,3 @@
-import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/controller/homeController.dart';
 import 'package:finance/custom-widget/FaSlideUp.dart';
 import 'package:finance/custom-widget/customTableCalendar.dart';
@@ -30,13 +29,15 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(builder: (model) {
-      print("debug: tasks count = ${model.totalCurrentTask} for ${_calendarController.focusedDay}");
-      var tasks = model.currentTask;
-      int todayTask = model.tasks.length;
-      int countTask = tasks.length;
-      return Scaffold(
-        floatingActionButton: FloatingActionButton(
+    return GetBuilder<HomeController>(
+        id: "task",
+        builder: (model) {
+          print(
+              "debug: tasks count = ${model.countCurrentTask} for ${_calendarController.focusedDay}");
+          var tasks = model.currentTask;
+
+          return Scaffold(
+            /*floatingActionButton: FloatingActionButton(
           onPressed: () {
             setState(() {
               _calendarController.setSelectedDay(DateTime.now().toLocal(),
@@ -45,53 +46,58 @@ class _CheckoutState extends State<Checkout> {
           },
           child: Icon(FeatherIcons.bookmark),
           backgroundColor: Colors.indigo,
-        ),
-        body: Container(
-          height: Get.height,
-          width: Get.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FaSlideAnimation.slideUp(
-                  delayed: 200,
-                  show: true,
-                  child: CustomTableCalendar(
-                      //isDarkMode: model.isDarkMode,
-                      onDaySelected: (day) => model.getCurrentTask(day),
-                      countTask: countTask,
-                      todayTask: todayTask)),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: tasks.isEmpty
-                      ? Center(
-                          child: Text("You have no task today!"),
-                        )
-                      : FaSlideAnimation.slideUp(
-                          delayed: 200,
-                          show: true,
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 10,
+        ),*/
+            body: Container(
+              height: Get.height,
+              width: Get.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FaSlideAnimation.slideUp(
+                      delayed: 200,
+                      show: true,
+                      child: CustomTableCalendar(
+                          //isDarkMode: model.isDarkMode,
+
+                          onDaySelected: (day) => model.getCurrentTask(day),
+                          countTask: model.countCurrentTask,
+                          countTodayTask: model.countTodayTask)),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: tasks.isEmpty
+                          ? Center(
+                              child: Text("You have no task today!"),
+                            )
+                          : FaSlideAnimation.slideUp(
+                              delayed: 200,
+                              show: true,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: 10,
+                                ),
+                                itemCount: model.countCurrentTask,
+                                itemBuilder: (context, index) {
+                                  return TaskItem(
+                                    title: tasks[index].title,
+                                    money: tasks[index].money,
+                                    location: tasks[index].location,
+                                    time: tasks[index].dateTime.toString(),
+                                    onTapped: () {
+                                      return model.removeTask(
+                                          index: index, time: tasks[index].dateTime.toString());
+                                    },
+                                    type: "Eat",
+                                  );
+                                },
+                              ),
                             ),
-                            itemCount: model.totalCurrentTask,
-                            itemBuilder: (context, index) {
-                              return TaskItem(
-                                title: tasks[index].title,
-                                money: tasks[index].money,
-                                location: tasks[index].location,
-                                time: tasks[index].dateTime.toString(),
-                                type: "Eat  ",
-                              );
-                            },
-                          ),
-                        ),
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      );
-    });
+            ),
+          );
+        });
   }
 }

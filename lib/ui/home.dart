@@ -4,10 +4,9 @@ import 'package:finance/constraint.dart';
 import 'package:finance/controller/homeController.dart';
 import 'package:finance/custom-widget/circleIcon.dart';
 import 'package:finance/custom-widget/customButton.dart';
-import 'package:finance/provider/today_provider.dart';
 import 'package:finance/style.dart';
 import 'package:finance/ui/presentTask.dart';
-import 'package:finance/ui/profile.dart';
+import 'package:finance/ui/profile/profile.dart';
 import 'package:finance/util/placeHolder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   var _widgets = <Widget>[];
   int _selectedIndex = 0;
   PageController _pageController;
-  TodayProvider todayProvider;
   final HomeController h = Get.put(HomeController());
 
   @override
@@ -46,6 +44,8 @@ class _HomePageState extends State<HomePage> {
     //var screenSize = MediaQuery.of(context).size;
     //todayProvider = Provider.of<TodayProvider>(context);
     return GetBuilder<HomeController>(
+      assignId: true,
+      id: "task",
       init: HomeController(),
       builder: (model) => Scaffold(
         appBar: PreferredSize(
@@ -53,18 +53,25 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Row(
                 children: <Widget>[
-                  CachedNetworkImage(
-                      imageBuilder: (context, imageProvider) => Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(image: imageProvider, fit: BoxFit.cover)),
-                          ),
-                      placeholder: (context, url) =>
-                          Skeleton.image(height: 40, width: 40, borderRadius: 10),
-                      imageUrl:
-                          "https://i.picsum.photos/id/774/200/200.jpg?hmac=kHZuEL0Tzh_9wUk4BnU9zxodilE2mGBdAAor2hKpA_w"),
+                  InkWell(
+                    onTap: () async{
+                      await _pageController.animateToPage(2,
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.fastLinearToSlowEaseIn);
+                    },
+                    child: CachedNetworkImage(
+                        imageBuilder: (context, imageProvider) => Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover)),
+                            ),
+                        placeholder: (context, url) =>
+                            Skeleton.image(height: 40, width: 40, borderRadius: 10),
+                        imageUrl:
+                            "https://i.picsum.photos/id/774/200/200.jpg?hmac=kHZuEL0Tzh_9wUk4BnU9zxodilE2mGBdAAor2hKpA_w"),
+                  ),
                   SizedBox(width: 10),
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -83,8 +90,7 @@ class _HomePageState extends State<HomePage> {
                     width: 40,
                     icon: FeatherIcons.plus,
                     onPress: () {
-                      Get.isBottomSheetOpen ? model.clear() :model.showAddTask();
-                      
+                      Get.isBottomSheetOpen ? model.clear() : model.showAddTask();
                     },
                     iconColor: Colors.blue,
                     tooltip: "Create task",
@@ -113,9 +119,9 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: Container(
             decoration: BoxDecoration(
-                
-               // boxShadow: [BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.2))]
-                
+
+                // boxShadow: [BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.2))]
+
                 ),
             child: SafeArea(
               child: Padding(

@@ -1,19 +1,17 @@
-import 'package:finance/controller/profileController.dart';
 import 'package:finance/style.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomTableCalendar extends StatefulWidget {
   final Function onDaySelected;
   final int countTask;
-  final int todayTask;
+  final int countTodayTask;
   final bool isDarkMode;
   const CustomTableCalendar(
       {@required this.onDaySelected,
       this.isDarkMode = false,
       this.countTask = 0,
-      this.todayTask = 0});
+      this.countTodayTask = 0});
 
   @override
   _CustomTableCalendarState createState() => _CustomTableCalendarState();
@@ -26,7 +24,7 @@ class _CustomTableCalendarState extends State<CustomTableCalendar> {
   Widget build(BuildContext context) {
     return TableCalendar(
       initialCalendarFormat: CalendarFormat.week,
-      headerStyle: AppStyle.tableCalendarHeaderStyle(widget.isDarkMode),
+      headerStyle: AppStyle.tableCalendarHeaderStyle(),
       calendarStyle: CalendarStyle(
         outsideDaysVisible: false,
       ),
@@ -53,7 +51,7 @@ class _CustomTableCalendarState extends State<CustomTableCalendar> {
         todayDayBuilder: (context, date, events) {
           // show 0 if that day doesn't have any task.
 
-          return buildDay(date, widget.todayTask);
+          return buildDay(date, widget.countTodayTask);
         },
       ),
     );

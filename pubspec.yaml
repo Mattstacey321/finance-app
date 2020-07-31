@@ -1,20 +1,7 @@
 name: finance
 description: A new Flutter project.
-
-# The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
 
 environment:
@@ -23,15 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.1.2
-  intl: ^0.16.1
+  provider: ^4.3.1
   google_nav_bar: ^2.2.0
   feather_icons_flutter: ^4.7.4
-  hive: ^1.4.1+1
-  hive_flutter: ^0.3.0+2
   cached_network_image: ^2.2.0+1
   table_calendar: ^2.2.3
-  get: ^3.3.0
+  get: ^3.4.0
   timeago: ^2.0.26
   bot_toast: ^3.0.0
   geolocator: ^5.3.2+2
@@ -41,16 +25,14 @@ dependencies:
       url: https://github.com/igaurab/user_location_plugin.git
   flutter_map_marker_popup: ^0.1.4
   shared_preferences: ^0.5.8
+  hive_flutter: ^0.3.1
+  hive: ^1.4.2
 
-dependency_overrides: 
-  path: 1.7.0 
 dev_dependencies:
-  hive_generator: ^0.7.0+2
-  build_runner: ^1.8.1
-  
+  hive_generator: ^0.7.1
+  build_runner: ^1.10.0
 
 flutter:
-
   uses-material-design: true
 
 fonts:

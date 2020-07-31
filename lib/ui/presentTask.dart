@@ -33,7 +33,10 @@ class PresentTask extends StatelessWidget {
                           title: tasks[index].title,
                           money: tasks[index].money,
                           location: tasks[index].location,
-                          time: tasks[index].dateTime.toString(),
+                          time: tasks[index].dateTimeAsString,
+                          onTapped: (){
+                            
+                          },
                           type: "Eat",
                         );
                       },
