@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _widgets = <Widget>[];
+  var _widgets = [PresentTask(), Checkout(), Profile()];
   int _selectedIndex = 0;
   PageController _pageController;
   final HomeController h = Get.put(HomeController());
@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _widgets = [PresentTask(), Checkout(), Profile()];
     _pageController = PageController();
   }
 
@@ -41,8 +40,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //var screenSize = MediaQuery.of(context).size;
-    //todayProvider = Provider.of<TodayProvider>(context);
     return GetBuilder<HomeController>(
       assignId: true,
       id: "task",
@@ -54,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: <Widget>[
                   InkWell(
-                    onTap: () async{
+                    onTap: () async {
                       await _pageController.animateToPage(2,
                           duration: Duration(milliseconds: 400),
                           curve: Curves.fastLinearToSlowEaseIn);
@@ -159,6 +156,7 @@ class _HomePageState extends State<HomePage> {
             )),
         body: PageView(
           controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
           onPageChanged: (int index) {
             setState(() {
               _selectedIndex = index;

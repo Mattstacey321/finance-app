@@ -1,6 +1,6 @@
 import 'package:finance/controller/baseController.dart';
 import 'package:finance/routes/routes.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
 import '../ui/home.dart';
 import '../ui/login/login.dart';

@@ -15,7 +15,7 @@ dependencies:
   feather_icons_flutter: ^4.7.4
   cached_network_image: ^2.2.0+1
   table_calendar: ^2.2.3
-  get: ^3.4.0
+  get: ^3.4.1
   timeago: ^2.0.26
   bot_toast: ^3.0.0
   geolocator: ^5.3.2+2

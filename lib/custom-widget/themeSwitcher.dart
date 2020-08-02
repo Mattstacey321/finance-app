@@ -1,4 +1,3 @@
-import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 class ThemeSwitcher extends StatefulWidget {
@@ -105,7 +104,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> with TickerProviderStateM
                         child: isCheck
                             ? Text(
                                 "Dark",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
                               )
                             : Text("Light",
                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),

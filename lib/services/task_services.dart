@@ -9,6 +9,7 @@ class TaskServices {
   List<Task> initTask() {
     var current = DateTime.now().toString();
     bool isKeyExist = tasksBox.values.any((e) => checkKeyExist(e.key));
+    print("debug: initTask -> $isKeyExist");
     if (isKeyExist) {
       return tasksBox.values.lastWhere((e) {
         return isDifference(compareTime: e.key);
@@ -41,7 +42,7 @@ class TaskServices {
 
     String key = tasksBox.values.isEmpty
         ? current
-        : tasksBox.values.singleWhere(
+        : tasksBox.values.lastWhere(
             (element) => isDifference(compareTime: task.dateTime.toString()), orElse: () {
             return emptyTask;
           }).key;
@@ -54,7 +55,7 @@ class TaskServices {
       tasksBox.values.forEach((element) {
         print(element.tasks.toString());
       });
-    }
+    } 
     /*else {
       // no have
       print("no have");

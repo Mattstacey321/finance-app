@@ -4,7 +4,6 @@ import 'package:finance/custom-widget/customTableCalendar.dart';
 import 'package:finance/custom-widget/taskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Checkout extends StatefulWidget {

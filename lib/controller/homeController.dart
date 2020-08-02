@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   TaskServices _taskServices = TaskServices();
+  static HomeController get to => Get.find();
   var location = Map<String, dynamic>();
   var _txtLocation = TextEditingController();
   var _txtTitle = TextEditingController();

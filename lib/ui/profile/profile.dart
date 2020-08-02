@@ -8,25 +8,21 @@ import 'package:finance/custom-widget/themeSwitcher.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Profile extends StatefulWidget {
-  @override
-  _ProfileState createState() => _ProfileState();
-}
+class Profile extends StatelessWidget {
 
-class _ProfileState extends State<Profile> {
-  static HomeController h = Get.put(HomeController());
-  var list = [
-    {"title": "Today", "money": h.totalMoney},
+  static var list = [
+    {"title": "Today", "money": HomeController.to.totalMoney},
     {"title": "This week", "money": 2560000},
     {"title": "This month", "money": 5600000}
   ];
-  var listMenu = ["Profile Information", "Dark mode", "Log out"];
-  
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: GetBuilder<ProfileController>(
+    
+    var listMenu = ["Profile Information", "Dark mode", "Log out"];
+
+    return GetBuilder<ProfileController>(
+      
       builder: (_) => Container(
         height: Get.height,
         width: Get.width,
@@ -64,12 +60,13 @@ class _ProfileState extends State<Profile> {
                             ),
                             Text(
                               "Your balance",
-                              style:
-                                  TextStyle(color: Colors.orange[100], fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                             )
                           ],
                         )),
                   ),
+                  SizedBox(height: 10),
                   Positioned(
                       child: Align(
                     alignment: Alignment.centerRight,
@@ -120,14 +117,17 @@ class _ProfileState extends State<Profile> {
                   Divider(thickness: 1),
                   CustomSetting(
                     title: "Profile Information",
-                    onTap: () {},
+                    onTap: () {
+                      print("profile");
+                    },
                     childs: [Spacer(), Icon(FeatherIcons.chevronRight)],
                   ),
                   Divider(thickness: 1),
                   CustomSetting(
                     title: "Language",
                     onTap: () {
-                      _.changeLanguage();
+                      _.switchLanguage();
+                      print("language");
                     },
                     childs: [Spacer(), Text("English")],
                   ),
@@ -139,16 +139,13 @@ class _ProfileState extends State<Profile> {
                     childs: [
                       Spacer(),
                       AbsorbPointer(
-                        absorbing: false,
-                        child: GetBuilder<ProfileController>(
-                            init: ProfileController(),
-                            builder: (p) => ThemeSwitcher(
-                                  onTap: () {
-                                    p.switchTheme();
-                                  },
-                                  isDarkMode: p.isDarkMode,
-                                )),
-                      )
+                          absorbing: false,
+                          child: ThemeSwitcher(
+                            onTap: () {
+                              _.switchTheme();
+                            },
+                            isDarkMode: _.isDarkMode,
+                          ))
                       //Obx(() => Text("${_.isDarkMode ? "Light" : "Dark"}"))
                     ],
                   ),
@@ -184,7 +181,7 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -198,3 +195,34 @@ Widget buildUserSummary({String title, int money}) {
     Text("$money đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
   ]);
 }
+/*
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  static HomeController h = Get.put(HomeController());
+  var list = [
+    {"title": "Today", "money": h.totalMoney},
+    {"title": "This week", "money": 2560000},
+    {"title": "This month", "money": 5600000}
+  ];
+  var listMenu = ["Profile Information", "Dark mode", "Log out"];
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+  }
+}
+
+Widget buildUserSummary({String title, int money}) {
+  return Column(mainAxisSize: MainAxisSize.min, children: [
+    Text(
+      "$title",
+      style: TextStyle(fontSize: 18),
+    ),
+    SizedBox(height: 5),
+    Text("$money đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+  ]);
+}*/

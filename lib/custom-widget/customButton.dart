@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomButton extends StatelessWidget{
   final double height;
   final double width;
   final Function onPress;
@@ -12,8 +12,8 @@ class CustomButton extends StatelessWidget {
   final bool isClickable;
   final List<Widget> childs;
   CustomButton(
-      { this.height = 36,
-       this.width = 88,
+      {this.height = 36,
+      this.width = 88,
       this.radius = 15,
       @required this.onPress,
       @required this.tooltip,
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(radius),
           splashColor: iconColor.withOpacity(0.1),
-          onTap: isClickable ? () => this.onPress() : null,
+          onTap: isClickable ? () => onPress() : null,
           child: Container(
             height: height,
             width: width,
@@ -44,8 +44,12 @@ class CustomButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                icon != null ?  Icon(icon, color: iconColor, size: height * 0.6) : SizedBox(width: 0),
-                childs != null ? icon != null ? SizedBox(width: 10) : SizedBox(width:0) : SizedBox(width: 0),
+                icon != null
+                    ? Icon(icon, color: iconColor, size: height * 0.6)
+                    : SizedBox(width: 0),
+                childs != null
+                    ? icon != null ? SizedBox(width: 10) : SizedBox(width: 0)
+                    : SizedBox(width: 0),
                 for (var widget in childs ?? []) widget
               ],
             ),
