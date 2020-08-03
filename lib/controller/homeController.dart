@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+import 'package:finance/custom-widget/addTaskType.dart';
 import 'package:finance/custom-widget/circleIcon.dart';
 import 'package:finance/custom-widget/customButton.dart';
 import 'package:finance/models/task.dart';
@@ -22,7 +23,7 @@ class HomeController extends GetxController {
   var _checkTitle = false.obs;
   var _checkMoney = false.obs;
   var _checkLocation = false.obs;
-  var _isDataNotEmpty = false.obs;
+  var _isDataEmpty = false.obs;
   var _tasks = <Task>[];
   var _currentTasks = [];
   var _totalMoney = 0.obs;
@@ -40,7 +41,7 @@ class HomeController extends GetxController {
   List<Task> get tasks => _tasks;
   List get currentTask => _currentTasks;
   bool get isLocationEmpty => _checkLocation.value;
-  bool get isDataNotEmpty => _isDataNotEmpty.value = (_checkMoney.value && _checkTitle.value);
+  bool get isDataEmpty => _isDataEmpty.value = !(_checkMoney.value && _checkTitle.value);
   @override
   onInit() async {
     initTask();
@@ -79,7 +80,7 @@ class HomeController extends GetxController {
         ),
         radius: 10,
         confirm: FlatButton(
-            onPressed: () async{
+            onPressed: () async {
               if (await _taskServices.removeTask(index, time)) {
                 _totalMoney.value -= _tasks[index].money;
                 _tasks.removeAt(index);
@@ -103,6 +104,7 @@ class HomeController extends GetxController {
   showAddTask() {
     _txtMoney.text = "0";
     _txtTitle.text = "";
+    this._isDataEmpty.value = false;
     this._checkLocation.value = false;
     this._txtLocation.clear();
     this.location = {};
@@ -150,8 +152,9 @@ class HomeController extends GetxController {
                     controller: _txtTitle,
                     textCapitalization: TextCapitalization.words,
                     keyboardType: TextInputType.text,
-                    onChanged: (value) =>
-                        value != "" ? _checkTitle.value = true : _checkTitle.value = false,
+                    onChanged: (value) {
+                      value != "" ? _checkTitle.value = true : _checkTitle.value = false;
+                    },
                     maxLines: 2,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -179,8 +182,15 @@ class HomeController extends GetxController {
                       new FilteringTextInputFormatter.deny(new RegExp('[^[a-zA-Z ]]')),
                     ],
                     style: TextStyle(fontSize: 20),
-                    onChanged: (value) =>
-                        int.parse(value) > 0 ? _checkMoney.value = true : _checkMoney.value = false,
+                    onChanged: (value) {
+                      if (value == "") {
+                        _checkMoney.value = false;
+                      } else {
+                        (int.parse(value) != 0 && int.parse(value) > 0)
+                            ? _checkMoney.value = true
+                            : _checkMoney.value = false;
+                      }
+                    },
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         filled: true,
@@ -211,20 +221,29 @@ class HomeController extends GetxController {
                   children: [
                     Text("Location", style: AppStyle.titleCreateTaskBottomSheet),
                     Spacer(),
-                    InkWell(
-                      onTap: this.isLocationEmpty
-                          ? null
-                          : () {
-                              Get.to(
-                                  MapView(
-                                    latitude: location['latitude'],
-                                    longitude: location['longitude'],
-                                  ),
-                                  transition: Transition.upToDown,
-                                  opaque: false);
-                            },
-                      child: Text("Edit"),
-                    )
+                    Obx(() => InkWell(
+                          borderRadius: BorderRadius.circular(10),
+                          onTap: !this.isLocationEmpty
+                              ? null
+                              : () {
+                                  Get.to(
+                                      MapView(
+                                        latitude: location['latitude'],
+                                        longitude: location['longitude'],
+                                      ),
+                                      transition: Transition.upToDown,
+                                      opaque: false);
+                                },
+                          child: Container(
+                            height: 25,
+                            width: 50,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.red.withOpacity(0.2)),
+                            child: Text("Edit"),
+                          ),
+                        ))
                   ],
                 ),
                 SizedBox(height: 10),
@@ -237,7 +256,7 @@ class HomeController extends GetxController {
                     style: TextStyle(fontSize: 20),
                     onChanged: (value) {
                       print("location value $value");
-                      return value != ""
+                      return value.isNotEmpty
                           ? _checkLocation.value = true
                           : _checkLocation.value = false;
                     },
@@ -272,49 +291,29 @@ class HomeController extends GetxController {
                 SizedBox(height: 10),
                 Text("Task Type", style: AppStyle.titleCreateTaskBottomSheet),
                 SizedBox(height: 10),
-                Container(
-                  height: 50,
-                  width: Get.width,
-                  child: TextField(
-                    controller: _txtTask,
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        filled: true,
-                        focusedErrorBorder:
-                            OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                        errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        hintText: "Select task",
-                        hintStyle: TextStyle(fontSize: 20)),
-                  ),
+                AddTaskType(
+                  onTap: () {},
                 ),
                 SizedBox(height: 30),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ButtonTheme(
-                    height: 50,
-                    minWidth: 200,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      color: Colors.indigo,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        addTask();
-                      },
-                      child: Text("Create Task"),
-                    ),
-                  ),
-                ),
+                Obx(() => Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ButtonTheme(
+                        height: 50,
+                        minWidth: 200,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          color: Colors.indigo,
+                          textColor: Colors.white,
+                          onPressed: isDataEmpty
+                              ? null
+                              : () {
+                                  addTask();
+                                },
+                          child: Text("Create Task"),
+                        ),
+                      ),
+                    )),
+                SizedBox(height: 10),
               ],
             ),
           ),
@@ -346,7 +345,7 @@ class HomeController extends GetxController {
       update();
 
       BotToast.showText(text: "Add success");
-      
+
       Get.back();
     } catch (e) {
       print(e);

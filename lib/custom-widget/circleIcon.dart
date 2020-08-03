@@ -19,6 +19,7 @@ class CircleIcon extends StatelessWidget {
               tooltip: tooltip ?? null,
               icon: child,
               onPressed: onTap,
+              splashRadius: 20,
               iconSize: iconSize,
             )
           : InkWell(child: child),

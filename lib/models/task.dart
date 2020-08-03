@@ -13,10 +13,11 @@ class Task extends HiveObject {
   DateTime dateTime;
   @HiveField(3)
   Map location;
-
+  @HiveField(4)
+  List type;
   String get dateTimeAsString => dateTime.toString();
 
-  Task({@required this.title, @required this.money, this.dateTime, @required this.location});
+  Task({@required this.title, @required this.money, this.dateTime, @required this.location,this.type});
 }
 
 @HiveType(typeId: 1)
