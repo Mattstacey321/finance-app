@@ -7,25 +7,29 @@ class CustomSetting extends StatelessWidget {
   final bool isClickable;
   final Function onTap;
   final List<Widget> childs;
-  CustomSetting({this.title, this.isClickable = true, this.onTap, this.childs});
+  CustomSetting({@required this.title, this.isClickable = true, @required  this.onTap, @required this.childs});
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: isClickable ? () => onTap() : null,
-      splashColor: Colors.grey.withOpacity(0.2),
-      enableFeedback: onTap() != null ? true : false,
-      child: Container(
-        height: 50,
-        width: Get.width,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: [
-            Text(
-              title,
-              style: AppStyle.profileSettingTitle,
-            ),
-            for (var widget in childs) widget
-          ],
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: isClickable ? () => onTap() : null,
+        splashColor: Colors.grey.withOpacity(0.2),
+        
+        //enableFeedback: onTap() != null ? true : false,
+        child: Container(
+          height: 50,
+          width: Get.width,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              Text(
+                title,
+                style: AppStyle.profileSettingTitle,
+              ),
+              for (var widget in childs) widget
+            ],
+          ),
         ),
       ),
     );

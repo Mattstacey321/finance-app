@@ -66,8 +66,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                         placeholder: (context, url) =>
                             Skeleton.image(height: 40, width: 40, borderRadius: 10),
-                        imageUrl:
-                            "https://i.picsum.photos/id/774/200/200.jpg?hmac=kHZuEL0Tzh_9wUk4BnU9zxodilE2mGBdAAor2hKpA_w"),
+                        imageUrl:AppConstraint.demoAvatar
+                            ),
                   ),
                   SizedBox(width: 10),
                   Column(

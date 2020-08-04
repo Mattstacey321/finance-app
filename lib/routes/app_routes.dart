@@ -1,5 +1,6 @@
 import 'package:finance/controller/baseController.dart';
 import 'package:finance/routes/routes.dart';
+import 'package:finance/ui/profile/edit_profile.dart';
 import 'package:get/get.dart';
 
 import '../ui/home.dart';
@@ -16,6 +17,10 @@ class AppPages {
         page: () => HomePage(),
         transition: Transition.native,
         binding: BaseController()),
+    GetPage(
+        name: Routes.EDITPROFILE,
+        page: () => EditProfile(),
+        transition: Transition.rightToLeftWithFade),
     GetPage(name: Routes.PROFILE, page: () => Profile(), binding: BaseController()),
   ];
 }

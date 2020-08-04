@@ -42,12 +42,6 @@ class HomeController extends GetxController {
   List get currentTask => _currentTasks;
   bool get isLocationEmpty => _checkLocation.value;
   bool get isDataEmpty => _isDataEmpty.value = !(_checkMoney.value && _checkTitle.value);
-  @override
-  onInit() async {
-    initTask();
-
-    super.onInit();
-  }
 
   void initTask() {
     _tasks.addAll(_taskServices.initTask());

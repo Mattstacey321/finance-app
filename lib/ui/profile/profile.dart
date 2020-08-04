@@ -5,11 +5,11 @@ import 'package:finance/controller/profileController.dart';
 import 'package:finance/custom-widget/customButton.dart';
 import 'package:finance/custom-widget/customSetting.dart';
 import 'package:finance/custom-widget/themeSwitcher.dart';
+import 'package:finance/ui/profile/mange_balance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Profile extends StatelessWidget {
-
   static var list = [
     {"title": "Today", "money": HomeController.to.totalMoney},
     {"title": "This week", "money": 2560000},
@@ -18,11 +18,9 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     var listMenu = ["Profile Information", "Dark mode", "Log out"];
 
     return GetBuilder<ProfileController>(
-      
       builder: (_) => Container(
         height: Get.height,
         width: Get.width,
@@ -73,7 +71,9 @@ class Profile extends StatelessWidget {
                     child: CustomButton(
                         height: 40,
                         width: 100,
-                        onPress: () {},
+                        onPress: () {
+                          Get.bottomSheet(ManageBalance(),backgroundColor: Colors.white);
+                        },
                         childs: [
                           Text("Manage",
                               style:
@@ -119,6 +119,7 @@ class Profile extends StatelessWidget {
                     title: "Profile Information",
                     onTap: () {
                       print("profile");
+                      Get.toNamed('/editprofile');
                     },
                     childs: [Spacer(), Icon(FeatherIcons.chevronRight)],
                   ),
