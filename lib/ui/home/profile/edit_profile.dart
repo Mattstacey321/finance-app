@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/constraint.dart';
-import 'package:finance/controller/editProfileController.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/controller/edit_profile_controller.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

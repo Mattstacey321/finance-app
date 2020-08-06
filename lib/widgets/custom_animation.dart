@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class FaSlideAnimation extends StatefulWidget {
+class CustomAnimation extends StatefulWidget {
   final Widget child;
   final bool show;
   final int delayed;
   final Offset offsetStart;
   final Offset offsetEnd;
-  FaSlideAnimation(
+  CustomAnimation(
       {this.child,
       this.show = true,
       @required this.delayed,
       @required this.offsetStart,
       @required this.offsetEnd});
 
-  factory FaSlideAnimation.slideUp({Widget child, bool show = true, int delayed}) {
-    return FaSlideAnimation(
+  factory CustomAnimation.slideUp({Widget child, bool show = true, int delayed}) {
+    return CustomAnimation(
         show: show,
         delayed: delayed,
         offsetStart: Offset(0, 1),
         offsetEnd: Offset.zero,
         child: child);
   }
-  factory FaSlideAnimation.slideDown({Widget child, bool show = true, int delayed}) {
-    return FaSlideAnimation(
+  factory CustomAnimation.slideDown({Widget child, bool show = true, int delayed}) {
+    return CustomAnimation(
         show: show,
         delayed: delayed,
         offsetStart: Offset.zero,
         offsetEnd: Offset(0, 0),
         child: child);
   }
-  factory FaSlideAnimation.slideLeft({Widget child, bool show = true, int delayed}) {
-    return FaSlideAnimation(
+  factory CustomAnimation.slideLeft({Widget child, bool show = true, int delayed}) {
+    return CustomAnimation(
         show: show,
         delayed: delayed,
         offsetStart: Offset(1, 0),
         offsetEnd: Offset.zero,
         child: child);
   }
-  factory FaSlideAnimation.slideRight({Widget child, bool show = true, int delayed}) {
-    return FaSlideAnimation(
+  factory CustomAnimation.slideRight({Widget child, bool show = true, int delayed}) {
+    return CustomAnimation(
         show: show,
         delayed: delayed,
         offsetStart: Offset.zero,
@@ -47,10 +47,10 @@ class FaSlideAnimation extends StatefulWidget {
         child: child);
   }
   @override
-  _FaSlideAnimationState createState() => _FaSlideAnimationState();
+  _CustomAnimationState createState() => _CustomAnimationState();
 }
 
-class _FaSlideAnimationState extends State<FaSlideAnimation> with TickerProviderStateMixin {
+class _CustomAnimationState extends State<CustomAnimation> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<Offset> animation;
 

@@ -1,11 +1,11 @@
-import 'package:finance/controller/taskController.dart';
+import 'package:finance/controller/task_controller.dart';
 import 'package:finance/services/map_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:user_location/user_location.dart';
 import 'package:latlong/latlong.dart';
-import 'homeController.dart';
+import 'home_controller.dart';
 
 class MapsController extends GetxController {
   MapController mapController = MapController();

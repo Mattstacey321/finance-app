@@ -1,8 +1,8 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
-import 'package:finance/controller/taskController.dart';
+import 'package:finance/controller/task_controller.dart';
 import 'package:finance/ui/home/create_task/widgets/addTaskType.dart';
 import 'package:finance/ui/map_view/map.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

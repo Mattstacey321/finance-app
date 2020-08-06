@@ -1,6 +1,6 @@
-import 'package:finance/controller/homeController.dart';
-import 'package:finance/controller/profileController.dart';
-import 'package:finance/controller/themeController.dart';
+import 'package:finance/controller/home_controller.dart';
+import 'package:finance/controller/profile_controller.dart';
+import 'package:finance/controller/theme_controller.dart';
 import 'package:get/get.dart';
 
 class BaseController implements Bindings {

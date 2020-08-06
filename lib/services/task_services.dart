@@ -1,5 +1,5 @@
 import 'package:finance/models/task.dart';
-import 'package:finance/util/checkTime.dart';
+import 'package:finance/util/check_time.dart';
 import 'package:hive/hive.dart';
 
 class TaskServices {

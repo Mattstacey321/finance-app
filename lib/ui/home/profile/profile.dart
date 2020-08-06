@@ -1,14 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/color.dart';
-import 'package:finance/controller/homeController.dart';
-import 'package:finance/controller/profileController.dart';
+import 'package:finance/controller/home_controller.dart';
+import 'package:finance/controller/profile_controller.dart';
 import 'package:finance/theme/style.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'widgets/profileWidgets.dart';
+import 'widgets/profile_widgets.dart';
 
 class Profile extends StatelessWidget {
   @override

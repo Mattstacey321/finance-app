@@ -1,12 +1,12 @@
-import 'package:finance/controller/themeController.dart';
-import 'package:finance/ui/home/profile/widgets/profileWidgets.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/controller/theme_controller.dart';
+import 'package:finance/ui/home/profile/widgets/profile_widgets.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:vector_math/vector_math.dart' as math;
 
-import 'homeController.dart';
+import 'home_controller.dart';
 
 class ProfileController extends GetxController {
   var _isDarkMode = false.obs;

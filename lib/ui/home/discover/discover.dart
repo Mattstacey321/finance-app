@@ -1,9 +1,9 @@
-import 'package:finance/controller/homeController.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/controller/home_controller.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'widgets/customTableCalendar.dart';
+import 'widgets/custom_table_calendar.dart';
 
 class Discover extends StatelessWidget {
   @override
@@ -21,7 +21,7 @@ class Discover extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FaSlideAnimation.slideUp(
+                  CustomAnimation.slideUp(
                       delayed: 200,
                       show: true,
                       child: CustomTableCalendar(
@@ -35,7 +35,7 @@ class Discover extends StatelessWidget {
                           ? Center(
                               child: Text("You have no task today!"),
                             )
-                          : FaSlideAnimation.slideUp(
+                          : CustomAnimation.slideUp(
                               delayed: 200,
                               show: true,
                               child: ListView.separated(

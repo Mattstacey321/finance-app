@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/services/map_services.dart';
-import 'package:finance/util/checkTime.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/util/check_time.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

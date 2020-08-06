@@ -1,18 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/constraint.dart';
-import 'package:finance/controller/homeController.dart';
+import 'package:finance/controller/home_controller.dart';
 import 'package:finance/theme/style.dart';
 import 'package:finance/ui/home/statistics/statistics.dart';
-import 'package:finance/util/placeHolder.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/util/place_holder.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
 
 import 'discover/discover.dart';
-import 'present_task/presentTask.dart';
+import 'present_task/present_task.dart';
 import 'profile/profile.dart';
 
 class HomePage extends StatefulWidget {

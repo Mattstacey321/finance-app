@@ -1,4 +1,4 @@
-import 'package:finance/controller/baseController.dart';
+import 'package:finance/controller/base_controller.dart';
 import 'package:finance/routes/routes.dart';
 import 'package:finance/ui/home/profile/edit_profile.dart';
 import 'package:finance/ui/home/profile/profile.dart';

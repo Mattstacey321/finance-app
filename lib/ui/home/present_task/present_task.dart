@@ -1,5 +1,5 @@
-import 'package:finance/controller/homeController.dart';
-import 'package:finance/widgets/widgets.dart';
+import 'package:finance/controller/home_controller.dart';
+import 'package:finance/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +15,7 @@ class PresentTask extends StatelessWidget {
             height: Get.height,
             width: Get.width,
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: FaSlideAnimation.slideUp(
+            child: CustomAnimation.slideUp(
               delayed: 400,
               show: true,
               child: tasks.isEmpty
