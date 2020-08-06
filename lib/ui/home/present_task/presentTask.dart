@@ -1,6 +1,5 @@
 import 'package:finance/controller/homeController.dart';
-import 'package:finance/custom-widget/FaSlideUp.dart';
-import 'package:finance/custom-widget/taskItem.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +26,7 @@ class PresentTask extends StatelessWidget {
                       separatorBuilder: (context, index) => SizedBox(
                         height: 10,
                       ),
+                      reverse: true,
                       itemCount: tasks.length,
                       itemBuilder: (context, index) {
                         return TaskItem(

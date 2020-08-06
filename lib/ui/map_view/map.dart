@@ -1,8 +1,7 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/constraint.dart';
 import 'package:finance/controller/mapController.dart';
-import 'package:finance/custom-widget/circleIcon.dart';
-import 'package:finance/custom-widget/customButton.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';

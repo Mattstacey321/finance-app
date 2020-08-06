@@ -1,3 +1,4 @@
+import 'package:finance/controller/taskController.dart';
 import 'package:finance/services/map_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -11,9 +12,7 @@ class MapsController extends GetxController {
   UserLocationOptions userLocationOptions;
   List<Marker> markers = [];
   HomeController h = Get.find<HomeController>();
-
-  
-
+  TaskController t = Get.find<TaskController>();
 
   Future addYourCurrentLocation(latlng) async {
     await MapServices.getAddressLocation(latitude: latlng.latitude, longitude: latlng.longitude)
@@ -22,7 +21,7 @@ class MapsController extends GetxController {
 
   addMarker(LatLng lng, String pickAddress) {
     var pickLocation = {"latitude": lng.latitude, "longitude": lng.longitude};
-    h.setLocation(pickAddress, pickLocation);
+    t.setLocation(pickAddress, pickLocation);
     markers.add(Marker(
       width: 80.0,
       height: 80.0,

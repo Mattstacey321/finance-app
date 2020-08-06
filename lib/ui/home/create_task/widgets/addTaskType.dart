@@ -1,5 +1,5 @@
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
-import 'package:finance/custom-widget/circleIcon.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +17,7 @@ class _AddTaskTypeState extends State<AddTaskType> with TickerProviderStateMixin
   TextEditingController _txtTask = TextEditingController();
   FocusNode textFieldFocusNode = FocusNode();
   AnimationController _controller;
+  AnimationController _clearIconController;
   Animation _animation;
 
   bool _isTap = false;
@@ -27,6 +28,7 @@ class _AddTaskTypeState extends State<AddTaskType> with TickerProviderStateMixin
   @override
   void initState() {
     _controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _clearIconController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller)
       ..addListener(() {})
       ..addStatusListener((status) {});
@@ -87,7 +89,9 @@ class _AddTaskTypeState extends State<AddTaskType> with TickerProviderStateMixin
             AnimatedOpacity(
                 duration: Duration(seconds: 1),
                 opacity: animation.value,
-                child: _listTaskType.isEmpty ? Container() : _buildTaskTypeItem(index, animation, _listTaskType[index])),
+                child: _listTaskType.isEmpty
+                    ? Container()
+                    : _buildTaskTypeItem(index, animation, _listTaskType[index])),
             SizedBox(width: 10)
           ],
         );
@@ -136,8 +140,10 @@ class _AddTaskTypeState extends State<AddTaskType> with TickerProviderStateMixin
           contentPadding: EdgeInsets.symmetric(horizontal: 10),
           hintText: "Type task",
           suffixIcon: AnimatedOpacity(
-              duration: Duration(milliseconds: 500),
-              opacity: _isEmpty ? 0 : 1,
+            duration: Duration(milliseconds: 500),
+            opacity: _isEmpty ? 0 : 1,
+            child: SlideTransition(
+              position: Tween(begin: Offset(0, 1), end: Offset.zero).animate(_clearIconController),
               child: CircleIcon(
                   tooltip: "Add task type",
                   onTap: () {
@@ -147,7 +153,9 @@ class _AddTaskTypeState extends State<AddTaskType> with TickerProviderStateMixin
                       _addItem();
                     });
                   },
-                  child: Icon(FeatherIcons.check))),
+                  child: Icon(FeatherIcons.check)),
+            ),
+          ),
           hintStyle: TextStyle(fontSize: 20)),
     );
   }
@@ -155,6 +163,7 @@ class _AddTaskTypeState extends State<AddTaskType> with TickerProviderStateMixin
   @override
   void dispose() {
     _controller.dispose();
+    _clearIconController.dispose();
     _txtTask.dispose();
     super.dispose();
   }

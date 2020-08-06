@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget{
+class CustomButton extends StatelessWidget {
   final double height;
   final double width;
   final Function onPress;
@@ -10,11 +10,15 @@ class CustomButton extends StatelessWidget{
   final Color iconColor;
   final double opacity;
   final bool isClickable;
+  final Color backgroundColor;
+  final bool showElevation;
   final List<Widget> childs;
   CustomButton(
       {this.height = 36,
       this.width = 88,
       this.radius = 15,
+      this.showElevation = false,
+      this.backgroundColor,
       @required this.onPress,
       @required this.tooltip,
       @required this.iconColor,
@@ -40,7 +44,11 @@ class CustomButton extends StatelessWidget{
             width: width,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(radius), color: iconColor.withOpacity(opacity)),
+                borderRadius: BorderRadius.circular(radius),
+                boxShadow: showElevation
+                    ? [BoxShadow(color: Colors.black.withOpacity(0.1), offset: Offset(1, 2))]
+                    : null,
+                color: backgroundColor == null ? iconColor.withOpacity(opacity) : backgroundColor),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

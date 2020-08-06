@@ -1,25 +1,18 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
+import 'package:finance/color.dart';
 import 'package:finance/controller/homeController.dart';
 import 'package:finance/controller/profileController.dart';
-import 'package:finance/custom-widget/customButton.dart';
-import 'package:finance/custom-widget/customSetting.dart';
-import 'package:finance/custom-widget/themeSwitcher.dart';
-import 'package:finance/ui/profile/mange_balance.dart';
+import 'package:finance/theme/style.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Profile extends StatelessWidget {
-  static var list = [
-    {"title": "Today", "money": HomeController.to.totalMoney},
-    {"title": "This week", "money": 2560000},
-    {"title": "This month", "money": 5600000}
-  ];
+import 'widgets/profileWidgets.dart';
 
+class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var listMenu = ["Profile Information", "Dark mode", "Log out"];
-
     return GetBuilder<ProfileController>(
       builder: (_) => Container(
         height: Get.height,
@@ -29,16 +22,13 @@ class Profile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 80,
+              height: 100,
               width: Get.width,
               alignment: Alignment.center,
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [Color(0xffF2994A), Color(0xffF2C94C)])),
+                  gradient: AppColor.gradientColor.whoseProduct),
               child: Stack(
                 children: [
                   Positioned(
@@ -49,70 +39,74 @@ class Profile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "18000000 đ",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
                               "Your balance",
                               style: TextStyle(
                                   color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                            )
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "18000000 đ",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
                           ],
                         )),
                   ),
-                  SizedBox(height: 10),
                   Positioned(
-                      child: Align(
-                    alignment: Alignment.centerRight,
-                    child: CustomButton(
-                        height: 40,
-                        width: 100,
-                        onPress: () {
-                          Get.bottomSheet(ManageBalance(),backgroundColor: Colors.white);
-                        },
-                        childs: [
-                          Text("Manage",
-                              style:
-                                  TextStyle(color: Colors.orange[900], fontWeight: FontWeight.bold),
-                              overflow: TextOverflow.ellipsis)
-                        ],
-                        tooltip: "Manage",
-                        iconColor: Colors.orange[900],
-                        icon: Icons.settings),
-                  ))
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomButton(
+                          height: 40,
+                          width: 100,
+                          onPress: () {
+                            Get.bottomSheet(ManageBalance(),
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: AppStyle.bottomSheetBorder),useRootNavigator: true,isScrollControlled: true);
+                          },
+                          childs: [
+                            Text("Manage",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis)
+                          ],
+                          opacity: 1,
+                          tooltip: "Manage",
+                          iconColor: Colors.white,
+                          backgroundColor: Colors.orange[600].withOpacity(0.8),
+                          showElevation: true,
+                          icon: Icons.settings),
+                    ),
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Container(
-              height: 50,
-              width: Get.width,
-              alignment: Alignment.center,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => Container(
-                  width: 40,
-                  alignment: Alignment.center,
-                  child: VerticalDivider(
-                    thickness: 2,
+                height: 50,
+                width: Get.width,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: GetBuilder<HomeController>(
+                  id: "task", // listen value change when this GetBuilder has that id change
+                  builder: (h) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      buildUserSummary(title: "Today", money: h.totalMoney),
+                      SizedBox(width: 40),
+                      buildUserSummary(title: "This week", money: 0),
+                      SizedBox(width: 40),
+                      buildUserSummary(title: "This month", money: 0)
+                    ],
                   ),
-                ),
-                itemCount: 3,
-                itemBuilder: (context, index) =>
-                    buildUserSummary(title: list[index]['title'], money: list[index]['money']),
-              ),
-            ),
+                )),
             SizedBox(height: 10),
-            Flexible(
+            Expanded(
                 child: Padding(
               padding: EdgeInsets.all(0.0),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Divider(thickness: 1),
                   CustomSetting(
@@ -196,34 +190,3 @@ Widget buildUserSummary({String title, int money}) {
     Text("$money đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
   ]);
 }
-/*
-class Profile extends StatefulWidget {
-  @override
-  _ProfileState createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  static HomeController h = Get.put(HomeController());
-  var list = [
-    {"title": "Today", "money": h.totalMoney},
-    {"title": "This week", "money": 2560000},
-    {"title": "This month", "money": 5600000}
-  ];
-  var listMenu = ["Profile Information", "Dark mode", "Log out"];
-
-  @override
-  Widget build(BuildContext context) {
-    return 
-  }
-}
-
-Widget buildUserSummary({String title, int money}) {
-  return Column(mainAxisSize: MainAxisSize.min, children: [
-    Text(
-      "$title",
-      style: TextStyle(fontSize: 18),
-    ),
-    SizedBox(height: 5),
-    Text("$money đ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-  ]);
-}*/

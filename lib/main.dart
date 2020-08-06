@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'routes/app_routes.dart';
-import 'ui/home.dart';
+import 'ui/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

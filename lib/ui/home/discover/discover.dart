@@ -1,51 +1,20 @@
 import 'package:finance/controller/homeController.dart';
-import 'package:finance/custom-widget/FaSlideUp.dart';
-import 'package:finance/custom-widget/customTableCalendar.dart';
-import 'package:finance/custom-widget/taskItem.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:table_calendar/table_calendar.dart';
 
-class Checkout extends StatefulWidget {
-  @override
-  _CheckoutState createState() => _CheckoutState();
-}
+import 'widgets/customTableCalendar.dart';
 
-class _CheckoutState extends State<Checkout> {
-  CalendarController _calendarController;
-
-  @override
-  void initState() {
-    super.initState();
-    _calendarController = CalendarController();
-  }
-
-  @override
-  void dispose() {
-    _calendarController.dispose();
-    super.dispose();
-  }
-
+class Discover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
         id: "task",
         builder: (model) {
           print(
-              "debug: tasks count = ${model.countCurrentTask} for ${_calendarController.focusedDay}");
+              "debug: tasks count = ${model.countCurrentTask} for ${model.calendarController.focusedDay}");
           var tasks = model.currentTask;
-
           return Scaffold(
-            /*floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _calendarController.setSelectedDay(DateTime.now().toLocal(),
-                  animate: true, isProgrammatic: true, runCallback: true);
-            });
-          },
-          child: Icon(FeatherIcons.bookmark),
-          backgroundColor: Colors.indigo,
-        ),*/
             body: Container(
               height: Get.height,
               width: Get.width,
@@ -56,8 +25,6 @@ class _CheckoutState extends State<Checkout> {
                       delayed: 200,
                       show: true,
                       child: CustomTableCalendar(
-                          //isDarkMode: model.isDarkMode,
-
                           onDaySelected: (day) => model.getCurrentTask(day),
                           countTask: model.countCurrentTask,
                           countTodayTask: model.countTodayTask)),

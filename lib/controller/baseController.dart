@@ -7,7 +7,10 @@ class BaseController implements Bindings {
   @override
   void dependencies() {
     Get.put<ThemeController>(ThemeController());
+    //Get.lazyPut(() => HomeController());
+    //Get.lazyPut(() => ProfileController());
+    Get.put<HomeController>(HomeController(),permanent: true);
     Get.put<ProfileController>(ProfileController());
-    Get.put<HomeController>(HomeController());
+    
   }
 }

@@ -1,6 +1,6 @@
 import 'package:finance/controller/themeController.dart';
-import 'package:finance/custom-widget/customButton.dart';
-import 'package:finance/custom-widget/languageItem.dart';
+import 'package:finance/ui/home/profile/widgets/profileWidgets.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -11,10 +11,19 @@ import 'homeController.dart';
 class ProfileController extends GetxController {
   var _isDarkMode = false.obs;
   var _locate = "en".obs;
+  var _totalMoney = 0.obs;
+
+  @override
+  void onInit() {
+    ever(_totalMoney, (value) {
+      print("value in profileController change $value");
+    });
+    super.onInit();
+  }
+
+  int get totalMoney => HomeController.to.totalMoney;
   bool get isDarkMode => _isDarkMode.value;
   String get appLocate => _locate.value;
-
- 
 
   void changeLanguage(String locate) {
     _locate.value = locate;

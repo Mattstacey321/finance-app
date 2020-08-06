@@ -21,6 +21,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       money: fields[1] as int,
       dateTime: fields[2] as DateTime,
       location: (fields[3] as Map)?.cast<dynamic, dynamic>(),
+      description: fields[5] as String,
       type: (fields[4] as List)?.cast<dynamic>(),
     );
   }
@@ -28,7 +29,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(3)
       ..write(obj.location)
       ..writeByte(4)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(5)
+      ..write(obj.description);
   }
 
   @override

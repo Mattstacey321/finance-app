@@ -1,4 +1,4 @@
-import 'package:finance/style.dart';
+import 'package:finance/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

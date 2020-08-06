@@ -2,18 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:finance/constraint.dart';
 import 'package:finance/controller/homeController.dart';
-import 'package:finance/custom-widget/circleIcon.dart';
-import 'package:finance/custom-widget/customButton.dart';
-import 'package:finance/style.dart';
-import 'package:finance/ui/presentTask.dart';
-import 'package:finance/ui/profile/profile.dart';
+import 'package:finance/theme/style.dart';
+import 'package:finance/ui/home/statistics/statistics.dart';
 import 'package:finance/util/placeHolder.dart';
+import 'package:finance/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
 
-import 'checkout.dart';
+import 'discover/discover.dart';
+import 'present_task/presentTask.dart';
+import 'profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,10 +21,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _widgets = [PresentTask(), Checkout(), Profile()];
+  var _widgets = [PresentTask(), Discover(), Statistics(), Profile()];
   int _selectedIndex = 0;
   PageController _pageController;
-  final HomeController h = Get.put(HomeController());
 
   @override
   void initState() {
@@ -52,8 +51,8 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   InkWell(
                     onTap: () async {
-                      await _pageController.animateToPage(2,
-                          duration: Duration(milliseconds: 400),
+                      await _pageController.animateToPage(3,
+                          duration: Duration(milliseconds: 500),
                           curve: Curves.fastLinearToSlowEaseIn);
                     },
                     child: CachedNetworkImage(
@@ -87,7 +86,8 @@ class _HomePageState extends State<HomePage> {
                     width: 40,
                     icon: FeatherIcons.plus,
                     onPress: () {
-                      Get.isBottomSheetOpen ? model.clear() : model.showAddTask();
+                      //Get.isBottomSheetOpen ? model.clear() :
+                       model.showAddTask();
                     },
                     iconColor: Colors.blue,
                     tooltip: "Create task",
@@ -130,20 +130,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     duration: Duration(milliseconds: 500),
                     tabBackgroundColor: Colors.grey[800],
-                    tabs: [
-                      GButton(
-                        icon: FeatherIcons.activity,
-                        text: 'Today',
-                      ),
-                      GButton(
-                        icon: FeatherIcons.check,
-                        text: 'Checkout',
-                      ),
-                      GButton(
-                        icon: FeatherIcons.user,
-                        text: 'Profile',
-                      ),
-                    ],
+                    tabs: AppStyle.customTab,
                     selectedIndex: _selectedIndex,
                     onTabChange: (index) {
                       setState(() {

@@ -5,6 +5,7 @@ class EditProfileController extends GetxController {
   var emailController = TextEditingController();
   var usernameController = TextEditingController();
   var fullNameController = TextEditingController();
+  
   @override
   void onInit() {
     super.onInit();
