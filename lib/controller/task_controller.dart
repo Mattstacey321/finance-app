@@ -1,10 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:finance/models/task.dart';
 import 'package:finance/services/map_services.dart';
+import 'package:finance/services/task_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'home_controller.dart';
+
 class TaskController extends GetxController {
+  TaskServices _taskServices = TaskServices();
   var location = Map<String, dynamic>();
 
   var txtLocation = TextEditingController();
@@ -27,7 +31,7 @@ class TaskController extends GetxController {
           addTask();
         };
 
-  setLocation(String address, Map pickedLocation) {
+  void setLocation(String address, Map pickedLocation) {
     this.txtLocation.text = address;
     this.location = pickedLocation;
     print("debug: you set address : $address");
@@ -60,7 +64,7 @@ class TaskController extends GetxController {
   }
 
   addTask() {
-    print(this.location.toString());
+    //print(this.location.toString());
     try {
       var task = Task(
           money: int.parse(txtMoney.text),
@@ -68,9 +72,8 @@ class TaskController extends GetxController {
           title: txtTitle.text,
           dateTime: DateTime.now());
 
-      /* _taskServices.addTask(task);
-      _tasks.add(task);
-      _currentTasks.add(task);*/
+      _taskServices.addTask(task);
+      HomeController.to.addTask(task);
 
       update();
       BotToast.showText(text: "Add success");

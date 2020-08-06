@@ -68,17 +68,20 @@ class TasksAdapter extends TypeAdapter<Tasks> {
     return Tasks(
       createTime: fields[0] as String,
       tasks: (fields[1] as List)?.cast<Task>(),
+      totalMoney: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Tasks obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.createTime)
       ..writeByte(1)
-      ..write(obj.tasks);
+      ..write(obj.tasks)
+      ..writeByte(2)
+      ..write(obj.totalMoney);
   }
 
   @override

@@ -33,6 +33,8 @@ class Tasks extends HiveObject {
   String createTime;
   @HiveField(1)
   List<Task> tasks;
+  @HiveField(2)
+  int totalMoney;
   int get taskLength => tasks.length;
-  Tasks({this.createTime, this.tasks});
+  Tasks({this.createTime, this.tasks,this.totalMoney = 0});
 }

@@ -28,6 +28,9 @@ class Profile extends StatelessWidget {
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.2), spreadRadius: 1, blurRadius: 15)
+                  ],
                   gradient: AppColor.gradientColor.whoseProduct),
               child: Stack(
                 children: [
@@ -64,11 +67,13 @@ class Profile extends StatelessWidget {
                             Get.bottomSheet(ManageBalance(),
                                 backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: AppStyle.bottomSheetBorder),useRootNavigator: true,isScrollControlled: true);
+                                    borderRadius: AppStyle.bottomSheetBorder),
+                                useRootNavigator: true,
+                                isScrollControlled: true);
                           },
                           childs: [
                             Text("Manage",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                                 overflow: TextOverflow.ellipsis)
                           ],
                           opacity: 1,
@@ -101,34 +106,39 @@ class Profile extends StatelessWidget {
                     ],
                   ),
                 )),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Expanded(
                 child: Padding(
               padding: EdgeInsets.all(0.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Divider(thickness: 1),
                   CustomSetting(
                     title: "Profile Information",
+                    icon: FeatherIcons.user,
+                    iconColor: Theme.of(context).iconTheme.color,
                     onTap: () {
                       print("profile");
                       Get.toNamed('/editprofile');
                     },
                     childs: [Spacer(), Icon(FeatherIcons.chevronRight)],
                   ),
-                  Divider(thickness: 1),
+                  SizedBox(height: 20),
                   CustomSetting(
                     title: "Language",
+                    icon: FeatherIcons.globe,
+                    iconColor: Theme.of(context).iconTheme.color,
                     onTap: () {
                       _.switchLanguage();
                       print("language");
                     },
                     childs: [Spacer(), Text("English")],
                   ),
-                  Divider(thickness: 1),
+                  SizedBox(height: 20),
                   CustomSetting(
                     title: "Dark mode",
+                    icon: FeatherIcons.moon,
+                    iconColor: Theme.of(context).iconTheme.color,
                     onTap: () => null,
                     isClickable: false,
                     childs: [
@@ -144,30 +154,36 @@ class Profile extends StatelessWidget {
                       //Obx(() => Text("${_.isDarkMode ? "Light" : "Dark"}"))
                     ],
                   ),
-                  Divider(thickness: 1),
+                  SizedBox(height: 20),
                   CustomSetting(
                     title: "Sync data",
+                    icon: FeatherIcons.refreshCw,
+                    iconColor: Theme.of(context).iconTheme.color,
                     onTap: () {
                       BotToast.showText(text: "Sync data ...");
                     },
                     childs: [Spacer(), Text("Last modified 31/7/2020")],
                   ),
-                  Spacer(),
-                  Container(
-                    height: 50,
-                    width: Get.width,
-                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      CustomButton(
-                          height: 50,
-                          width: 140,
-                          onPress: () {
-                            _.logout();
-                          },
-                          tooltip: "Log out",
-                          iconColor: Colors.red,
-                          childs: [Text("Log out")],
-                          icon: FeatherIcons.logOut),
-                    ]),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 50,
+                        width: Get.width,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          CustomButton(
+                              height: 50,
+                              width: 140,
+                              onPress: () {
+                                _.logout();
+                              },
+                              tooltip: "Log out",
+                              iconColor: Colors.red,
+                              childs: [Text("Log out")],
+                              icon: FeatherIcons.logOut),
+                        ]),
+                      ),
+                    ),
                   ),
                 ],
               ),

@@ -11,9 +11,9 @@ class Discover extends StatelessWidget {
     return GetBuilder<HomeController>(
         id: "task",
         builder: (model) {
-          print(
-              "debug: tasks count = ${model.countCurrentTask} for ${model.calendarController.focusedDay}");
-          var tasks = model.currentTask;
+          /* print(
+              "debug: tasks count = ${model.countCurrentTask} for ${model.calendarController.focusedDay}");*/
+          var tasks = model.currentTasks;
           return Scaffold(
             body: Container(
               height: Get.height,
@@ -21,16 +21,15 @@ class Discover extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomAnimation.slideUp(
-                      delayed: 200,
-                      show: true,
-                      child: CustomTableCalendar(
-                          onDaySelected: (day) => model.getCurrentTask(day),
-                          countTask: model.countCurrentTask,
-                          countTodayTask: model.countTodayTask)),
+                  CustomTableCalendar(
+                      onDaySelected: (day) => model.getCurrentTask(day),
+                      countTask: model.countCurrentTask,
+                      totalMoney: model.totalMoney,
+                      countTodayTask: model.countTodayTask),
+                  Divider(),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       child: tasks.isEmpty
                           ? Center(
                               child: Text("You have no task today!"),

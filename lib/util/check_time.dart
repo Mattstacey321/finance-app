@@ -5,6 +5,12 @@ bool isDifference({String compareTime}) {
   return DateTime.parse(compareTime).difference(DateTime.now()).inDays == 0 &&
       DateTime.parse(compareTime).day == DateTime.now().day;
 }
+
+bool isKeyDifference({String compareTime,String selectTime}){
+  return DateTime.parse(compareTime).difference(DateTime.parse(selectTime)).inDays == 0 &&
+      DateTime.parse(compareTime).day == DateTime.now().day;
+}
+
 String toNow(DateTime date){
   var locale = 'en';
   return timeago.format(date.subtract(new Duration(minutes: 1)), locale: locale);

@@ -26,13 +26,22 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> with TickerProviderStateM
     super.initState();
     setState(() {
       isCheck = widget.isDarkMode;
+      print("theme is $isCheck");
     });
 
     animationController =
         AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
     animation = Tween<double>(begin: 0, end: 1).animate(animationController)..addListener(() {});
-
-    animationController.forward();
+    if (isCheck) {
+      setState(() {
+        setState(() {
+          startPos = 0.0;
+          endPos = 1.0;
+        });
+        animationController.forward();
+      });
+    }
+    //animationController.forward();
   }
 
   @override
@@ -46,6 +55,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> with TickerProviderStateM
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
       onTap: () {
+        print("theme is click $isCheck");
         setState(() {
           if (isCheck) {
             animationController.forward();
@@ -104,7 +114,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> with TickerProviderStateM
                         child: isCheck
                             ? Text(
                                 "Dark",
-                                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                               )
                             : Text("Light",
                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),

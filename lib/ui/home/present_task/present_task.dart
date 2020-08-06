@@ -22,24 +22,29 @@ class PresentTask extends StatelessWidget {
                   ? Center(
                       child: Text("You have no task today!"),
                     )
-                  : ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 10,
-                      ),
-                      reverse: true,
-                      itemCount: tasks.length,
-                      itemBuilder: (context, index) {
-                        return TaskItem(
-                          title: tasks[index].title,
-                          money: tasks[index].money,
-                          location: tasks[index].location,
-                          time: tasks[index].dateTimeAsString,
-                          onTapped: (){
-                            
-                          },
-                          type: "Eat",
-                        );
-                      },
+                  : Column(
+                      children: [
+                        Flexible(
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 10,
+                            ),
+                            reverse: true,
+                            shrinkWrap: true,
+                            itemCount: tasks.length,
+                            itemBuilder: (context, index) {
+                              return TaskItem(
+                                title: tasks[index].title,
+                                money: tasks[index].money,
+                                location: tasks[index].location,
+                                time: tasks[index].dateTimeAsString,
+                                onTapped: () {},
+                                type: "Eat",
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
             ),
           ),

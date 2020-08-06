@@ -11,9 +11,10 @@ class HomeController extends GetxController {
   static HomeController get to => Get.find();
   CalendarController calendarController = CalendarController();
 
-  var _tasks = <Task>[];
-  var _currentTasks = [];
+  var tasks = <Task>[];
+  var currentTasks = [];
   var _totalMoney = 0.obs;
+  var _moneyByDay = 0.obs;
 
   int get totalMoney {
     var totalMoney = 0;
@@ -23,10 +24,9 @@ class HomeController extends GetxController {
     return _totalMoney.value = totalMoney;
   }
 
-  int get countCurrentTask => _currentTasks.length;
-  int get countTodayTask => _tasks.length;
-  List<Task> get tasks => _tasks;
-  List get currentTask => _currentTasks;
+  int get countCurrentTask => currentTasks.length;
+  int get countTodayTask => tasks.length;
+  int get totalMoneyByDate => _moneyByDay.value;
 
   @override
   void onInit() {
@@ -41,15 +41,21 @@ class HomeController extends GetxController {
   }
 
   void initTask() {
-    _tasks.addAll(_taskServices.initTask());
-    _currentTasks.addAll(_taskServices.initTask());
+    tasks.addAll(_taskServices.initTask());
+    currentTasks.addAll(_taskServices.initTask());
     update();
   }
 
-  getCurrentTask(DateTime currentTime) {
-    _currentTasks = [];
-    print("hello ${_taskServices.getTaskByDate(currentTime)}");
-    _currentTasks.addAll(_taskServices.getTaskByDate(currentTime) ?? []);
+  void getCurrentTask(DateTime currentTime) {
+    currentTasks = [];
+    currentTasks.addAll(_taskServices.getTaskByDate(currentTime));
+    _moneyByDay.value = _taskServices.getTotalMoneyByDate(currentTime);
+    update();
+  }
+
+  void addTask(Task task) {
+    tasks.add(task);
+    currentTasks.add(task);
     update();
   }
 
@@ -60,15 +66,15 @@ class HomeController extends GetxController {
           height: 50,
           width: Get.width,
           alignment: Alignment.center,
-          child: Text("Do you want to log out ?"),
+          child: Text("Do you want to delete item ?"),
         ),
         radius: 10,
         confirm: FlatButton(
             onPressed: () async {
               if (await _taskServices.removeTask(index, time)) {
-                _totalMoney.value -= _tasks[index].money;
-                _tasks.removeAt(index);
-                _currentTasks.removeAt(index);
+                _totalMoney.value -= tasks[index].money;
+                tasks.removeAt(index);
+                currentTasks.removeAt(index);
 
                 update();
                 BotToast.showText(text: "Delete success");
